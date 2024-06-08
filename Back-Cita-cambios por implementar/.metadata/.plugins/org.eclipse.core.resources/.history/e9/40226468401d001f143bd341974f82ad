@@ -1,0 +1,7 @@
+package co.edu.uco.bodyhealty.crosscutting.exceptions.custom;
+
+import co.edu.uco.bodyhealty.crosscutting.exceptions.BodyHealtyException;
+
+public final class DataBodyHealtyException extends BodyHealtyException {
+
+}

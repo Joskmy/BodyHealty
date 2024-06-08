@@ -1,0 +1,65 @@
+package co.edu.uco.bodyhealty.dto;
+
+import co.edu.uco.bodyhealty.crosscutting.helpers.NumericHelper;
+import co.edu.uco.bodyhealty.crosscutting.helpers.TextHelper;
+
+public final class ServicioDTO {
+    private String identificador;
+    private String nombreServicio;
+    private int duracionEstimada;
+    private String descripcion;
+
+    public ServicioDTO() {
+        setNombreServicio(TextHelper.EMPTY);
+        setDuracionEstimada(NumericHelper.ZERO);
+        setDescripcion(TextHelper.EMPTY);
+    }
+
+    public ServicioDTO(final String identificador, final String nombreServicio, final int duracionEstimada, final String descripcion) {
+        setIdentificador(identificador);
+        setNombreServicio(nombreServicio);
+        setDuracionEstimada(duracionEstimada);
+        setDescripcion(descripcion);
+    }
+
+    public static final ServicioDTO build() {
+        return new ServicioDTO();
+    }
+
+    
+    public final String getIdentificador() {
+        return identificador;
+    }
+
+    public final String getNombreServicio() {
+        return nombreServicio;
+    }
+
+    public final int getDuracionEstimada() {
+        return duracionEstimada;
+    }
+
+    public final String getDescripcion() {
+        return descripcion;
+    }
+
+    private final ServicioDTO setIdentificador(final String identificador) {
+        this.identificador = TextHelper.applyTrim(identificador);
+        return this;
+    }
+
+    private final ServicioDTO setNombreServicio(final String nombreServicio) {
+        this.nombreServicio = TextHelper.applyTrim(nombreServicio);
+        return this;
+    }
+
+    private final ServicioDTO setDuracionEstimada(final int duracionEstimada) {
+        this.duracionEstimada = duracionEstimada >= NumericHelper.ZERO ? duracionEstimada : NumericHelper.ZERO;
+        return this;
+    }
+
+    private final ServicioDTO setDescripcion(final String descripcion) {
+        this.descripcion = TextHelper.applyTrim(descripcion);
+        return this;
+    }
+}

@@ -1,0 +1,12 @@
+package co.edu.uco.bodyhealty.data.dao;
+
+import co.edu.uco.bodyhealty.business.usecase.AgendarCita;
+import co.edu.uco.bodyhealty.data.dao.general.AgendarDAO;
+import co.edu.uco.bodyhealty.data.dao.general.BuscarDAO;
+import co.edu.uco.bodyhealty.data.dao.general.CancelarDAO;
+import co.edu.uco.bodyhealty.data.dao.general.ModificarDAO;
+import co.edu.uco.bodyhealty.entity.CitaEntity;
+
+public interface AgendaDAO extends AgendarDAO<CitaEntity>, BuscarDAO<CitaEntity>, ModificarDAO<CitaEntity>, CancelarDAO  {
+
+}

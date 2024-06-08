@@ -1,0 +1,47 @@
+package co.edu.uco.bodyhealty.business.assembler.entity.concrete;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import co.edu.uco.bodyhealty.business.assembler.entity.EntityDomainAssembler;
+import co.edu.uco.bodyhealty.business.domain.TipoCubiculoDomain;
+import co.edu.uco.bodyhealty.crosscutting.helpers.ObjectHelper;
+import co.edu.uco.bodyhealty.entity.TipoCubiculoEntity;
+
+public class TipoCubiculoEntityDomainAssembler implements EntityDomainAssembler<TipoCubiculoDomain, TipoCubiculoEntity> {
+	private static final EntityDomainAssembler<TipoCubiculoDomain, TipoCubiculoEntity> instancia = new TipoCubiculoEntityDomainAssembler();
+
+	private TipoCubiculoEntityDomainAssembler() {
+		super();
+	}
+
+	public static final EntityDomainAssembler<TipoCubiculoDomain, TipoCubiculoEntity> obtenerInstancia() {
+		return instancia;
+	}
+
+	@Override
+	public final TipoCubiculoDomain ensamblarDominio(final TipoCubiculoEntity entidad) {
+		var paisEntityTmp = ObjectHelper.getObjectHelper().getDefault(entidad, TipoCubiculoEntity.build(0));
+		return TipoCubiculoDomain.crear(paisEntityTmp.getId(), paisEntityTmp.getNombre());
+	}
+
+	@Override
+	public final TipoCubiculoEntity ensablarEntidad(final TipoCubiculoDomain dominio) {
+		var paisDomainTmp = ObjectHelper.getObjectHelper().getDefault(dominio, TipoCubiculoDomain.crear());
+		return TipoCubiculoEntity.build(paisDomainTmp.getId(), paisDomainTmp.getNombre());
+	}
+
+	@Override
+	public final List<TipoCubiculoDomain> ensamblarListaDominios(final List<TipoCubiculoEntity> listaEntidades) {
+		var listaEntidadesTmp = ObjectHelper.getObjectHelper().getDefault(listaEntidades, new ArrayList<TipoCubiculoEntity>());
+		var resultados = new ArrayList<TipoCubiculoDomain>();
+
+		for (TipoCubiculoEntity paisEntity : listaEntidadesTmp) {
+			var paisDomainTmp = ensamblarDominio(paisEntity);
+			resultados.add(paisDomainTmp);
+		}
+
+		return resultados;
+	}
+
+}

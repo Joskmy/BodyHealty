@@ -1,0 +1,11 @@
+package co.edu.uco.bodyhealty.crosscutting.helpers;
+
+public class Snippet {
+	public static void main(String[] args) {
+		/TiendaChepito/src/main/java/co/edu/uco/tiendachepito/crosscutting/helpers/NumericHelper.java
+		/TiendaChepito/src/main/java/co/edu/uco/tiendachepito/crosscutting/helpers/ObjectHelper.java
+		/TiendaChepito/src/main/java/co/edu/uco/tiendachepito/crosscutting/helpers/SQLHelper.java
+		/TiendaChepito/src/main/java/co/edu/uco/tiendachepito/crosscutting/helpers/TextHelper.java
+	}
+}
+

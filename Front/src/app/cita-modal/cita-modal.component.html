@@ -1,0 +1,58 @@
+<div class="formulario">
+  <h2 mat-dialog-title>Formulario de Cita</h2>
+<mat-dialog-content>
+  <form [formGroup]="citaForm">
+    <div class="form-group">
+      <mat-form-field appearance="fill">
+        <mat-label>Paciente</mat-label>
+        <input matInput formControlName="paciente">
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field appearance="fill">
+        <mat-label>Servicio</mat-label>
+        <mat-select formControlName="servicio">
+          <mat-option *ngFor="let servicio of servicios" [value]="servicio">{{ servicio }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field appearance="fill">
+        <mat-label>Especialista</mat-label>
+        <mat-select formControlName="especialista">
+          <mat-option *ngFor="let especialista of especialistas" [value]="especialista">{{ especialista }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field appearance="fill">
+        <mat-label>Consultorio</mat-label>
+        <mat-select formControlName="consultorio">
+          <mat-option *ngFor="let consultorio of consultorios" [value]="consultorio">{{ consultorio }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field appearance="fill">
+        <mat-label>Fecha</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="fecha">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field appearance="fill">
+        <mat-label>Turno</mat-label>
+        <mat-select formControlName="turno">
+          <mat-option *ngFor="let turno of turnos" [value]="turno">{{ turno }}</mat-option>
+        </mat-select>        
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cerrar</button>
+  <button mat-button class="custom-submit-button" (click)="submitForm()">Guardar</button>
+</mat-dialog-actions>
+
+</div>

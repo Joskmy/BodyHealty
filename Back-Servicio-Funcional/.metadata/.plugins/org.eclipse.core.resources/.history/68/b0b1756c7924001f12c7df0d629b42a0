@@ -1,0 +1,5 @@
+package co.edu.uco.bodyhealty.api.controller;
+
+public class ServicioController {
+
+}

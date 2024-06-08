@@ -1,0 +1,5 @@
+package co.edu.uco.bodyhealty.api.response.cita;
+
+public class CitaResponse {
+
+}

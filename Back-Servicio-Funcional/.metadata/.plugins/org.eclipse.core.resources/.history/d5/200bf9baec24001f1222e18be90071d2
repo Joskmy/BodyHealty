@@ -1,0 +1,107 @@
+package co.edu.uco.bodyhealty.api.controller;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import co.edu.uco.bodyhealty.api.response.servicio.ServicioResponse;
+import co.edu.uco.bodyhealty.business.domain.ServicioDomain;
+import co.edu.uco.bodyhealty.business.fecade.ConsultarServiciosFachada;
+import co.edu.uco.bodyhealty.business.fecade.concrete.ConsultarServiciosFachadaImpl;
+import co.edu.uco.bodyhealty.business.usecase.concrete.AgregarServicioImpl;
+import co.edu.uco.bodyhealty.crosscutting.exceptions.BodyHealtyException;
+import co.edu.uco.bodyhealty.crosscutting.exceptions.custom.BusinessBodyHealtyException;
+import co.edu.uco.bodyhealty.crosscutting.exceptions.messagecatalog.MessageCatalogStrategy;
+import co.edu.uco.bodyhealty.crosscutting.exceptions.messagecatalog.data.CodigoMensaje;
+import co.edu.uco.bodyhealty.crosscutting.helpers.NumericHelper;
+import co.edu.uco.bodyhealty.data.dao.factory.DAOFactory;
+import co.edu.uco.bodyhealty.data.dao.factory.enums.Factory;
+import co.edu.uco.bodyhealty.dto.ServicioDTO;
+
+@RestController
+@RequestMapping("/api/v1/servicios")
+public class ServicioController {
+    
+    private final DAOFactory factory = DAOFactory.getFactory(Factory.POSTGRESQL);
+    private final AgregarServicioImpl agregarServicio = new AgregarServicioImpl(factory);
+    
+    @GetMapping("/dummy")
+    public ServicioDTO getDummy() {
+        return ServicioDTO.build();
+    }
+    
+    @GetMapping
+    public ResponseEntity<ServicioResponse> consultar(
+            @RequestParam(required = false, defaultValue = "0") String id,
+            @RequestParam(required = false, defaultValue = "") String nombre,
+            @RequestParam(required = false, defaultValue = "") String duracion,
+            @RequestParam(required = false, defaultValue = "") String descripcion) {
+
+        ServicioResponse servicioResponse = ServicioResponse.build();
+        HttpStatus httpStatusResponse = HttpStatus.OK;
+
+        try {
+            final var servicioDtpFilter = ServicioDTO.build()
+                    .setId(NumericHelper.convertToInt(id))
+                    .setNombreServicio(nombre)
+                    .setDuracionEstimada(NumericHelper.convertToInt(duracion))
+                    .setDescripcion(descripcion);
+
+            final ConsultarServiciosFachada fachada = new ConsultarServiciosFachadaImpl();
+            servicioResponse.setDatos(fachada.execute(servicioDtpFilter));
+            servicioResponse.getMensajes().add(MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00039));
+        } catch (final BodyHealtyException exception) {
+            exception.printStackTrace();
+            servicioResponse.getMensajes().add(exception.getMensajeUsuario());
+            httpStatusResponse = HttpStatus.BAD_REQUEST;
+        } catch (final Exception exception) {
+            exception.printStackTrace();
+            servicioResponse.getMensajes().add(MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00040));
+            httpStatusResponse = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+        return new ResponseEntity<>(servicioResponse, httpStatusResponse);
+    }
+
+    @PostMapping
+    public ResponseEntity<ServicioResponse> crear(@RequestBody ServicioDTO servicioDTO) {
+        ServicioResponse servicioResponse = ServicioResponse.build();
+        HttpStatus httpStatusResponse = HttpStatus.OK;
+
+        try {
+            factory.iniciarTransaccion();
+            
+            // Convertir ServicioDTO a ServicioDomain
+            ServicioDomain servicioDomain = new ServicioDomain();
+            servicioDomain.setNombreServicio(servicioDTO.getNombreServicio());
+            servicioDomain.setDuracionEstimada(servicioDTO.getDuracionEstimada());
+            servicioDomain.setDescripcion(servicioDTO.getDescripcion());
+
+            // Ejecutar el caso de uso para agregar el servicio
+            agregarServicio.ejecutar(servicioDomain);
+            
+            factory.confirmarTransaccion();
+
+            servicioResponse.getDatos().add(servicioDTO);
+            servicioResponse.getMensajes().add(MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00041));
+        } catch (BusinessBodyHealtyException e) {
+            factory.cancelarTransaccion();
+            servicioResponse.getMensajes().add(e.getMensajeUsuario());
+            httpStatusResponse = HttpStatus.BAD_REQUEST;
+        } catch (final BodyHealtyException exception) {
+            factory.cancelarTransaccion();
+            exception.printStackTrace();
+            servicioResponse.getMensajes().add(exception.getMensajeUsuario());
+            httpStatusResponse = HttpStatus.BAD_REQUEST;
+        } catch (final Exception exception) {
+            factory.cancelarTransaccion();
+            exception.printStackTrace();
+            servicioResponse.getMensajes().add(MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00042));
+            httpStatusResponse = HttpStatus.INTERNAL_SERVER_ERROR;
+        } finally {
+            factory.cerrarConexion();
+        }
+
+        return new ResponseEntity<>(servicioResponse, httpStatusResponse);
+    }
+}

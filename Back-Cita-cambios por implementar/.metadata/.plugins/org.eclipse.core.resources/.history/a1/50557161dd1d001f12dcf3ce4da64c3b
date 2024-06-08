@@ -1,0 +1,80 @@
+package co.edu.uco.bodyhealty.business.assembler.entity.concrete;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import co.edu.uco.bodyhealty.business.assembler.entity.EntityDomainAssembler;
+import co.edu.uco.bodyhealty.business.domain.CitaDomain;
+import co.edu.uco.bodyhealty.business.domain.CubiculoDomain;
+import co.edu.uco.bodyhealty.business.domain.EstadoCitaDomain;
+import co.edu.uco.bodyhealty.business.domain.PacienteDomain;
+import co.edu.uco.bodyhealty.business.domain.ServicioDomain;
+import co.edu.uco.bodyhealty.business.domain.TurnoDomain;
+import co.edu.uco.bodyhealty.crosscutting.helpers.ObjectHelper;
+import co.edu.uco.bodyhealty.entity.CitaEntity;
+import co.edu.uco.bodyhealty.entity.CubiculoEntity;
+import co.edu.uco.bodyhealty.entity.EstadoCitaEntity;
+import co.edu.uco.bodyhealty.entity.PacienteEntity;
+import co.edu.uco.bodyhealty.entity.ServicioEntity;
+import co.edu.uco.bodyhealty.entity.TurnoEntity;
+
+public class CitaEntityDomainAssembler implements EntityDomainAssembler<CitaDomain, CitaEntity> {
+
+    private static final EntityDomainAssembler<CitaDomain, CitaEntity> instancia = new CitaEntityDomainAssembler();
+    private static final EntityDomainAssembler<EstadoCitaDomain, EstadoCitaEntity> estadoCitaAssembler = EstadoCitaEntityDomainAssembler.obtenerInstancia();
+    private static final EntityDomainAssembler<ServicioDomain, ServicioEntity> servicioAssembler = ServicioEntityDomainAssembler.obtenerInstancia();
+    private static final EntityDomainAssembler<PacienteDomain, PacienteEntity> pacienteAssembler = PacienteEntityDomainAssembler.obtenerInstancia();
+    private static final EntityDomainAssembler<TurnoDomain, TurnoEntity> turnoAssembler = TurnoEntityDomainAssembler.obtenerInstancia();
+    private static final EntityDomainAssembler<CubiculoDomain, CubiculoEntity> cubiculoAssembler = CubiculoEntityDomainAssembler.obtenerInstancia();
+
+    private CitaEntityDomainAssembler() {
+        super();
+    }
+
+    public static final EntityDomainAssembler<CitaDomain, CitaEntity> obtenerInstancia() {
+        return instancia;
+    }
+
+    @Override
+    public final CitaDomain ensamblarDominio(final CitaEntity entidad) {
+        var citaEntityTmp = ObjectHelper.getObjectHelper().getDefault(entidad, CitaEntity.build(0));
+        var estadoCitaDominio = estadoCitaAssembler.ensamblarDominio(citaEntityTmp.getEstadoCita());
+        var servicioDominio = servicioAssembler.ensamblarDominio(citaEntityTmp.getServicio());
+        var pacienteDominio = pacienteAssembler.ensamblarDominio(citaEntityTmp.getPaciente());
+        var turnoDominio = turnoAssembler.ensamblarDominio(citaEntityTmp.getTurno());
+        var cubiculoDominio = 
+
+        return CitaDomain.crear(citaEntityTmp.getId(), pacienteDominio, turnoDominio, servicioDominio, cub);
+    }
+    
+    setPaciente(PacienteDomain.crear());
+    setTurno(TurnoDomain.crear());
+    setServicio(ServicioDomain.crear());
+    setCubiculo(CubiculoDomain.crear());
+    setEstadoCita(EstadoCitaDomain.crear());
+    
+
+    @Override
+    public final CitaEntity ensablarEntidad(final CitaDomain dominio) {
+        var citaDomainTmp = ObjectHelper.getObjectHelper().getDefault(dominio, CitaDomain.crear());
+        var estadoCitaEntity = estadoCitaAssembler.ensablarEntidad(citaDomainTmp.getEstadoCita());
+        var servicioEntity = servicioAssembler.ensablarEntidad(citaDomainTmp.getServicio());
+        var pacienteEntity = pacienteAssembler.ensablarEntidad(citaDomainTmp.getPaciente());
+        var turnoEntity = turnoAssembler.ensablarEntidad(citaDomainTmp.getTurno());
+
+        return CitaEntity.build(citaDomainTmp.getId(), citaDomainTmp.getFecha(), citaDomainTmp.getHora(), estadoCitaEntity, servicioEntity, pacienteEntity, turnoEntity);
+    }
+
+    @Override
+    public final List<CitaDomain> ensamblarListaDominios(final List<CitaEntity> listaEntidades) {
+        var listaEntidadesTmp = ObjectHelper.getObjectHelper().getDefault(listaEntidades, new ArrayList<CitaEntity>());
+        var resultados = new ArrayList<CitaDomain>();
+
+        for (CitaEntity citaEntity : listaEntidadesTmp) {
+            var citaDomainTmp = ensamblarDominio(citaEntity);
+            resultados.add(citaDomainTmp);
+        }
+
+        return resultados;
+    }
+}

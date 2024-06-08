@@ -1,0 +1,5 @@
+package co.edu.uco.bodyhealty.business.assembler.entity.concrete;
+
+public class CubiculoEntityDomainAssembler {
+
+}

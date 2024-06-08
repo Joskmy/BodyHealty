@@ -1,0 +1,48 @@
+package co.edu.uco.bodyhealty.business.usecase.concrete;
+
+import co.edu.uco.bodyhealty.business.assembler.entity.concrete.CitaEntityDomainAssembler;
+import co.edu.uco.bodyhealty.business.domain.CitaDomain;
+import co.edu.uco.bodyhealty.business.usecase.AgendarCita;
+import co.edu.uco.bodyhealty.data.dao.factory.DAOFactory;
+
+public class AgendarCitaImpl implements AgendarCita {
+	private final DAOFactory factory;
+
+    public AgendarCitaImpl(DAOFactory factory) {
+        this.factory = factory;
+    }
+
+    @Override
+    public void ejecutar( CitaDomain cita) {
+        validarTurnoDisponible(cita.getTurno().getId());
+        validarPacienteExistente(cita.getPaciente().getId());
+        validarCubiculoDisponible(cita.getCubiculo().getId());
+
+        // Otras validaciones necesarias...
+
+        var citaEntity = CitaEntityDomainAssembler.obtenerInstancia().ensamblarEntidad(cita);
+        factory.getAgendarDAO().agendar(citaEntity);
+    }
+
+    private void validarTurnoDisponible(int idTurno) {
+        var turnoEntity = TurnoEntity.build(idTurno);
+        var citasEnTurno = factory.getCitaDAO().consultarPorTurno(turnoEntity);
+        if (!citasEnTurno.isEmpty()) {
+            throw new BusinessTiendaChepitoException("El turno seleccionado ya está ocupado.");
+        }
+    }
+
+    private void validarPacienteExistente(int idPaciente) {
+        // Lógica para validar si el paciente existe en el sistema
+        // Por ejemplo, consultar la base de datos de pacientes
+        // Si no existe, lanzar una excepción
+    }
+
+    private void validarCubiculoDisponible(int idCubiculo) {
+        // Lógica para validar si el cubículo está disponible en el turno de la cita
+        // Por ejemplo, consultar la base de datos para verificar si hay citas existentes para el cubículo en el mismo horario
+        // Si no está disponible, lanzar una excepción
+    }
+
+    // Otras validaciones necesarias...
+}

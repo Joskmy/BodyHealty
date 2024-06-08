@@ -1,0 +1,52 @@
+package co.edu.uco.bodyhealty.business.assembler.dto.concrete;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import co.edu.uco.bodyhealty.business.assembler.dto.DTODomainAssembler;
+import co.edu.uco.bodyhealty.business.domain.AgendaDomain;
+import co.edu.uco.bodyhealty.business.domain.TurnoDomain;
+import co.edu.uco.bodyhealty.crosscutting.helpers.ObjectHelper;
+import co.edu.uco.bodyhealty.dto.AgendaDTO;
+import co.edu.uco.bodyhealty.dto.TurnoDTO;
+
+public class TurnoDTODomainAssembler implements DTODomainAssembler<TurnoDomain, TurnoDTO> {
+
+    private static final TurnoDTODomainAssembler instancia = new TurnoDTODomainAssembler();
+    private static final DTODomainAssembler<AgendaDomain, AgendaDTO> agendaAssembler = AgendaDTODomainAssembler.obtenerInstancia();
+
+    private TurnoDTODomainAssembler() {
+        super();
+    }
+
+    public static TurnoDTODomainAssembler obtenerInstancia() {
+        return instancia;
+    }
+
+    @Override
+    public TurnoDomain ensamblarDominio(TurnoDTO dto) {
+        var turnoDtoTmp = ObjectHelper.getObjectHelper().getDefault(dto, new TurnoDTO());
+        var agendaDomain = agendaAssembler.ensamblarDominio(turnoDtoTmp.getAgenda());
+        return TurnoDomain.crear(turnoDtoTmp.getId(), agendaDomain, turnoDtoTmp.getHoraInicio(), turnoDtoTmp.getHoraFin());
+    }
+
+    @Override
+    public TurnoDTO ensamblarDTO(TurnoDomain dominio) {
+        var turnoDomainTmp = ObjectHelper.getObjectHelper().getDefault(dominio, TurnoDomain.crear());
+        var agendaDTO = agendaAssembler.ensamblarDTO(turnoDomainTmp.getAgenda());
+        return TurnoDTO.build().setId(turnoDomainTmp.getId()).setAgenda(agendaDTO).setHoraInicio(turnoDomainTmp.getHoraInicio()).setHoraFin(turnoDomainTmp.getHoraFin());
+    }
+
+    @Override
+    public List<TurnoDTO> ensamblarListaDTO(List<TurnoDomain> listaDominios) {
+        var listaDominiosTmp = ObjectHelper.getObjectHelper().getDefault(listaDominios, new ArrayList<TurnoDomain>());
+        var resultados = new ArrayList<TurnoDTO>();
+
+        for (TurnoDomain turnoDomain : listaDominiosTmp) {
+            var turnoDtoTmp = ensamblarDTO(turnoDomain);
+            resultados.add(turnoDtoTmp);
+        }
+
+        return resultados;
+    }
+}

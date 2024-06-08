@@ -1,0 +1,5 @@
+package co.edu.uco.bodyhealty.data.dao.sql;
+
+public class SqlConnection {
+
+}

@@ -1,0 +1,9 @@
+package co.edu.uco.bodyhealty.business.usecase.concrete;
+
+import co.edu.uco.bodyhealty.business.usecase.ConsultarServicios;
+
+public final class ConsultarServiciosImpl implements ConsultarServicios {
+	
+	private final
+
+}

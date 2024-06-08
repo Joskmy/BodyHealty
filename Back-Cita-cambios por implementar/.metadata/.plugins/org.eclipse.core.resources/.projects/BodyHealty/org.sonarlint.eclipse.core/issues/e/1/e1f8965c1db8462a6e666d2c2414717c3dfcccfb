@@ -1,0 +1,8 @@
+
+y
+java:S1854">Remove this useless assignment to local variable "citaDomain".8Çß¬ü1b ffe7a922aa515e9c45d99150ad938849h
+j
+java:S1481"/Remove this unused "citaDomain" local variable.8Çß¬ü1b 9c1f15ff0444586079a1185b69b38f45h
+v	java:S125"<This block of commented-out lines of code should be removed.8Çß¬ü1b 97bc51bb9c241801782238c317e2f2e7h
+Š
+java:S1128"ORemove this unused import 'co.edu.uco.bodyhealty.business.usecase.AgendarCita'.8Çß¬ü1b 7e6b9a65fea989d783cb09ae8f4457ech

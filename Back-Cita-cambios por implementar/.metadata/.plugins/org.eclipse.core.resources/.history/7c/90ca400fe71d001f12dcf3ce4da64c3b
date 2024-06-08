@@ -1,0 +1,46 @@
+package co.edu.uco.bodyhealty.business.usecase.concrete;
+
+import java.time.LocalTime;
+import java.util.List;
+
+import co.edu.uco.bodyhealty.business.assembler.entity.concrete.AgendaEntityDomainAssembler;
+import co.edu.uco.bodyhealty.business.assembler.entity.concrete.CitaEntityDomainAssembler;
+import co.edu.uco.bodyhealty.business.domain.CitaDomain;
+import co.edu.uco.bodyhealty.business.usecase.AgendarCita;
+import co.edu.uco.bodyhealty.crosscutting.exceptions.custom.BusinessBodyHealtyException;
+import co.edu.uco.bodyhealty.data.dao.factory.DAOFactory;
+import co.edu.uco.bodyhealty.dto.AgendaDTO;
+import co.edu.uco.bodyhealty.entity.AgendaEntity;
+import co.edu.uco.bodyhealty.entity.CitaEntity;
+import co.edu.uco.bodyhealty.entity.TurnoEntity;
+
+public class AgendarCitaImpl implements AgendarCita {
+	private final DAOFactory factory;
+
+    public AgendarCitaImpl(DAOFactory factory) {
+        this.factory = factory;
+    }
+
+    @Override
+    public void ejecutar( CitaDomain cita) {
+        validarTurnoDisponible(cita.getTurno().getId());
+
+        var citaEntity = CitaEntityDomainAssembler.obtenerInstancia().ensablarEntidad(cita);
+        factory.getAgendaDAO().agendar(citaEntity);
+    }
+    
+    
+    
+
+    private void validarTurnoDisponible(int id, int idAgenda, LocalTime horaInicio, LocalTime horaFin) {
+    	var agendaEntity = AgendaEntity.build(idAgenda);
+    	var turnoEntity = TurnoEntity.build(0, agendaEntity, horaInicio, horaFin);
+        
+    	final List<TurnoEntity> resultados = factory.getAgendaDAO().consultar(turnoEntity);
+    	
+    	if (!resultados.isEmpty()) {
+    		var mensajeUsuario = "Ya existe una Cita en ese turno";
+    		throw new BusinessBodyHealtyException(mensajeUsuario);
+    	}
+    }
+}

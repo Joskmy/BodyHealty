@@ -1,0 +1,110 @@
+package co.edu.uco.bodyhealty.data.dao.factory.sql.postgresql;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import co.edu.uco.bodyhealty.crosscutting.exceptions.custom.DataBodyHealtyException;
+import co.edu.uco.bodyhealty.crosscutting.exceptions.messagecatalog.MessageCatalogStrategy;
+import co.edu.uco.bodyhealty.crosscutting.exceptions.messagecatalog.data.CodigoMensaje;
+import co.edu.uco.bodyhealty.crosscutting.helpers.SQLHelper;
+import co.edu.uco.bodyhealty.data.dao.ServicioDAO;
+import co.edu.uco.bodyhealty.data.dao.factory.DAOFactory;
+import co.edu.uco.bodyhealty.data.dao.factory.enums.Factory;
+import co.edu.uco.bodyhealty.data.dao.sql.postgresql.ServicioPostgreSqlDAO;
+import co.edu.uco.bodyhealty.entity.ServicioEntity;
+
+public final class PostgresSqlDAOFactory extends DAOFactory {
+    private Connection connection;
+
+    public PostgresSqlDAOFactory() {
+        obtenerConexion();
+    }
+
+    @Override
+    protected void obtenerConexion() {
+        final String username = "postgres";
+        final String password = "chzpmn1001";
+        final String connectionUrl = "jdbc:postgresql://localhost/Final";
+
+        try {
+            System.out.println("Intentando establecer conexión con la base de datos...");
+            connection = DriverManager.getConnection(connectionUrl, username, password);
+            if (SQLHelper.isOpen(connection)) {
+                System.out.println("Conexión establecida exitosamente con la base de datos PostgreSQL.");
+            } else {
+                throw new SQLException("Conexión no válida o cerrada después de intentar establecerla.");
+            }
+        } catch (final SQLException excepcion) {
+            var mensajeUsuario = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00002);
+            var mensajeTecnico = "Se ha presentado un problema tratando de obtener la conexión con la base de datos PostgreSQL en el servidor. Por favor revise la traza de errores para identificar y solucionar el problema...";
+            System.err.println(mensajeTecnico);
+            excepcion.printStackTrace();
+            throw new DataBodyHealtyException(mensajeTecnico, mensajeUsuario, excepcion);
+        } catch (final Exception excepcion) {
+            var mensajeUsuario = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00002);
+            var mensajeTecnico = "Se ha presentado un problema INESPERADO tratando de obtener la conexión con la base de datos PostgreSQL en el servidor. Por favor revise la traza de errores para identificar y solucionar el problema...";
+            System.err.println(mensajeTecnico);
+            excepcion.printStackTrace();
+            throw new DataBodyHealtyException(mensajeTecnico, mensajeUsuario, excepcion);
+        }
+    }
+
+    @Override
+    public void iniciarTransaccion() {
+        SQLHelper.initTransaction(connection);
+        System.out.println("Transacción iniciada.");
+    }
+
+    @Override
+    public void confirmarTransaccion() {
+        SQLHelper.commit(connection);
+        System.out.println("Transacción confirmada.");
+    }
+
+    @Override
+    public void cancelarTransaccion() {
+        SQLHelper.rollback(connection);
+        System.out.println("Transacción cancelada.");
+    }
+
+    @Override
+    public void cerrarConexion() {
+        SQLHelper.close(connection);
+        System.out.println("Conexión cerrada exitosamente.");
+    }
+
+    @Override
+    public ServicioDAO getServicioDAO() {
+        return new ServicioPostgreSqlDAO(connection);
+    }
+    
+
+    public static void main(String[] args) {
+    	try {
+			DAOFactory factory = DAOFactory.getFactory(Factory.AZURESQL);
+
+			System.out.println("Iniciando transacción...");
+			factory.iniciarTransaccion();
+
+			System.out.println("Creando país aleatoriamente");
+			factory.getServicioDAO().agregar(ServicioEntity.build(0,"adfasd",30,"adsfsdaf");
+
+			System.out.println("Consultamos países: ");
+			var resultados = factory.getServicioDAO().consultar(ServicioEntity.build(0));
+
+			for (PaisEntity paisEntity : resultados) {
+				System.out.println("id: " + paisEntity.getId() + ", nombre: " + paisEntity.getNombre());
+			}
+
+			System.out.println("Confirmando transacción...");
+			factory.confirmarTransaccion();
+			System.out.println("Cerrando conexión...");
+			factory.cerrarConexion();
+		} catch (final Exception excepcion) {
+			excepcion.printStackTrace();
+		}
+    }
+}

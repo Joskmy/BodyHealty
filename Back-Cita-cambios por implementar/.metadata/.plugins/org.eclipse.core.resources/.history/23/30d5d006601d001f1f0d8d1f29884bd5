@@ -1,0 +1,5 @@
+package co.edu.uco.bodyhealty.data.dao.sql.postgresql;
+
+public final class AgendaPostgreSqlDAO {
+
+}

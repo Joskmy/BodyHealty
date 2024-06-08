@@ -1,0 +1,8 @@
+spring.application.name=BodyHealty
+spring.jpa.database=POSTGRESQL
+spring.datasource.url=jdbc:postgresql://localhost:5432/Final
+spring.datasource.username=postgres
+spring.datasource.password=chzpmn1001
+spring.jpa.show-sql=true
+
+

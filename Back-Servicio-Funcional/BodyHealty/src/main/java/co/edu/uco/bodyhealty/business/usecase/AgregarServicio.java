@@ -1,0 +1,9 @@
+package co.edu.uco.bodyhealty.business.usecase;
+
+import co.edu.uco.bodyhealty.business.domain.ServicioDomain;
+
+public interface AgregarServicio {
+	
+	void ejecutar(ServicioDomain servicio);
+
+}

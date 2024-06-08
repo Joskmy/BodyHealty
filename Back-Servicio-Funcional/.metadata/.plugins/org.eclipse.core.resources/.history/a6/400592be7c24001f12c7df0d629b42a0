@@ -1,0 +1,25 @@
+package co.edu.uco.bodyhealty.business.usecase.concrete;
+
+import java.util.List;
+
+import co.edu.uco.bodyhealty.business.domain.ServicioDomain;
+import co.edu.uco.bodyhealty.business.usecase.ConsultarServicios;
+import co.edu.uco.bodyhealty.data.dao.factory.DAOFactory;
+
+public final class ConsultarServiciosImpl implements ConsultarServicios {
+	
+	private final DAOFactory factory;
+	
+	public ConsultarServiciosImpl(final DAOFactory factory) {
+		this.factory = factory;
+	}
+
+	@Override
+	public final List<ServicioDomain> ejecutar(final ServicioDomain pais) {
+
+		var servicioEntity = PaisEntityDomainAssembler.obtenerInstancia().ensablarEntidad(pais);
+		var resultados = factory.getPaisDAO().consultar(paisEntity);
+
+		return PaisEntityDomainAssembler.obtenerInstancia().ensamblarListaDominios(resultados);
+	}
+}

@@ -1,0 +1,124 @@
+package co.edu.uco.bodyhealty.data.dao.factory.sql.postgresql;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import co.edu.uco.bodyhealty.crosscutting.exceptions.custom.DataBodyHealtyException;
+import co.edu.uco.bodyhealty.crosscutting.exceptions.messagecatalog.MessageCatalogStrategy;
+import co.edu.uco.bodyhealty.crosscutting.exceptions.messagecatalog.data.CodigoMensaje;
+import co.edu.uco.bodyhealty.crosscutting.helpers.SQLHelper;
+import co.edu.uco.bodyhealty.data.dao.ServicioDAO;
+import co.edu.uco.bodyhealty.data.dao.factory.DAOFactory;
+import co.edu.uco.bodyhealty.data.dao.factory.enums.Factory;
+import co.edu.uco.bodyhealty.data.dao.sql.postgresql.ServicioPostgreSqlDAO;
+import co.edu.uco.bodyhealty.entity.ServicioEntity;
+
+public final class PostgresSqlDAOFactory extends DAOFactory {
+    private Connection connection;
+
+    public PostgresSqlDAOFactory() {
+        obtenerConexion();
+    }
+
+    @Override
+    protected void obtenerConexion() {
+        final String username = "postgres";
+        final String password = "chzpmn1001";
+        final String connectionUrl = "jdbc:postgresql://localhost/Final";
+
+        try {
+            System.out.println("Intentando establecer conexión con la base de datos...");
+            connection = DriverManager.getConnection(connectionUrl, username, password);
+            if (SQLHelper.isOpen(connection)) {
+                System.out.println("Conexión establecida exitosamente con la base de datos PostgreSQL.");
+            } else {
+                throw new SQLException("Conexión no válida o cerrada después de intentar establecerla.");
+            }
+        } catch (final SQLException excepcion) {
+            var mensajeUsuario = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00002);
+            var mensajeTecnico = "Se ha presentado un problema tratando de obtener la conexión con la base de datos PostgreSQL en el servidor. Por favor revise la traza de errores para identificar y solucionar el problema...";
+            System.err.println(mensajeTecnico);
+            excepcion.printStackTrace();
+            throw new DataBodyHealtyException(mensajeTecnico, mensajeUsuario, excepcion);
+        } catch (final Exception excepcion) {
+            var mensajeUsuario = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00002);
+            var mensajeTecnico = "Se ha presentado un problema INESPERADO tratando de obtener la conexión con la base de datos PostgreSQL en el servidor. Por favor revise la traza de errores para identificar y solucionar el problema...";
+            System.err.println(mensajeTecnico);
+            excepcion.printStackTrace();
+            throw new DataBodyHealtyException(mensajeTecnico, mensajeUsuario, excepcion);
+        }
+    }
+
+    @Override
+    public void iniciarTransaccion() {
+        SQLHelper.initTransaction(connection);
+        System.out.println("Transacción iniciada.");
+    }
+
+    @Override
+    public void confirmarTransaccion() {
+        SQLHelper.commit(connection);
+        System.out.println("Transacción confirmada.");
+    }
+
+    @Override
+    public void cancelarTransaccion() {
+        SQLHelper.rollback(connection);
+        System.out.println("Transacción cancelada.");
+    }
+
+    @Override
+    public void cerrarConexion() {
+        SQLHelper.close(connection);
+        System.out.println("Conexión cerrada exitosamente.");
+    }
+
+    @Override
+    public ServicioDAO getServicioDAO() {
+        // Verificar si la conexión está abierta
+        if (!SQLHelper.isOpen(connection)) {
+            // Si la conexión está cerrada, intentar obtenerla nuevamente
+            obtenerConexion();
+        }
+        
+        // Imprimir mensaje de registro para verificar el estado de la conexión
+        System.out.println("La conexión está abierta. Creando el DAO...");
+
+        // Crear y retornar el DAO
+        return new ServicioPostgreSqlDAO(connection);
+    }
+    
+    public void crearTablaHola() {
+        String sql = "CREATE TABLE IF NOT EXISTS ASDASDFASD (id SERIAL PRIMARY KEY, columna1 VARCHAR(255), columna2 VARCHAR(255))";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.executeUpdate();
+            System.out.println("La tabla Hola se ha creado correctamente.");
+        } catch (SQLException e) {
+            String mensajeUsuario = "No ha sido posible crear la tabla Hola. Por favor intente de nuevo y en caso de persistir el problema, comuníquese con el administrador.";
+            String mensajeTecnico = "Se ha presentado un problema tratando de crear la tabla Hola en la base de datos PostgreSQL.";
+
+            throw new DataBodyHealtyException(mensajeTecnico, mensajeUsuario, e);
+        }
+    }
+
+
+    public static void main(String[] args) {
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            System.out.println("Conexión establecida exitosamente con la base de datos PostgreSQL.");
+
+            // Crear la tabla
+            String createTableQuery = "CREATE TABLE IF NOT EXISTS Hola (id SERIAL PRIMARY KEY, columna1 VARCHAR(255), columna2 VARCHAR(255))";
+            try (Statement statement = connection.createStatement()) {
+                statement.executeUpdate(createTableQuery);
+                System.out.println("La tabla Hola se ha creado correctamente.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al conectar o crear la tabla: " + e.getMessage());
+        }
+    }
+
+}

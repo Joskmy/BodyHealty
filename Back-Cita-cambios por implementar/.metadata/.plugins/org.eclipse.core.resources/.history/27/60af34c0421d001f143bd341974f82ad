@@ -1,0 +1,5 @@
+package co.edu.uco.bodyhealty.data.dao.factory.sql.postgresql;
+
+public final class PostgresSqlDAOFactory {
+
+}

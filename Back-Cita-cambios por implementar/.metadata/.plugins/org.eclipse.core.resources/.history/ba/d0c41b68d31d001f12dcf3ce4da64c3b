@@ -1,0 +1,61 @@
+package co.edu.uco.bodyhealty.business.domain;
+
+public class TurnoDomain {
+	private int id;
+    private AgendaDomain agenda;
+    private LocalTime horaInicio;
+    private LocalTime horaFin;
+
+    public TurnoDomain() {
+        setAgenda(AgendaDomain.build());
+        setHoraInicio(DateHelper.getDefaultTime());
+        setHoraFin(DateHelper.getDefaultTime());
+    }
+
+    public TurnoDomain(final int id, final AgendaDomain agenda, final LocalTime horaInicio, final LocalTime horaFin) {
+        setId(id);
+        setAgenda(agenda);
+        setHoraInicio(horaInicio);
+        setHoraFin(horaFin);
+    }
+    
+    public static final TurnoDomain crear() {
+        return new TurnoDomain();
+    }
+    
+    public static final TurnoDomain crear(final int id, final AgendaDomain agenda, final LocalTime horaInicio, final LocalTime horaFin) {
+        return new TurnoDomain(id, agenda, horaInicio, horaFin);
+    }
+
+    public final int getId() {
+        return id;
+    }
+
+    public final AgendaDomain getAgenda() {
+        return agenda;
+    }
+
+    public final LocalTime getHoraInicio() {
+        return horaInicio;
+    }
+
+    public final LocalTime getHoraFin() {
+        return horaFin;
+    }
+
+    public final TurnoDomain setId(final int id) {
+        this.id = id;
+    }
+
+    public final TurnoDomain setAgenda(final AgendaDomain agenda) {
+        this.agenda = ObjectHelper.getObjectHelper().getDefault(agenda, AgendaDomain.build());
+    }
+
+    public final TurnoDomain setHoraInicio(final LocalTime horaInicio) {
+        this.horaInicio = horaInicio;
+    }
+
+    public final TurnoDomain setHoraFin(final LocalTime horaFin) {
+        this.horaFin = horaFin;
+    }
+}

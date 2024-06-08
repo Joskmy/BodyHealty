@@ -1,0 +1,13 @@
+package co.edu.uco.bodyhealty.crosscutting.helpers;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import co.edu.uco.bodyhealty.crosscutting.exceptions.custom.CrosscuttingBodyHealtyException;
+import co.edu.uco.bodyhealty.crosscutting.exceptions.messagecatalog.MessageCatalogStrategy;
+import co.edu.uco.bodyhealty.crosscutting.exceptions.messagecatalog.data.CodigoMensaje;
+
+public final class SQLHelper {
+	
+
+}

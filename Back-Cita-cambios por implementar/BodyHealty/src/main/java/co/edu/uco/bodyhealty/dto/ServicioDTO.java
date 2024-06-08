@@ -1,0 +1,65 @@
+package co.edu.uco.bodyhealty.dto;
+
+import co.edu.uco.bodyhealty.crosscutting.helpers.NumericHelper;
+import co.edu.uco.bodyhealty.crosscutting.helpers.TextHelper;
+
+public final class ServicioDTO {
+    private int id;
+    private String nombreServicio;
+    private int duracionEstimada;
+    private String descripcion;
+
+    public ServicioDTO() {
+        setNombreServicio(TextHelper.EMPTY);
+        setDuracionEstimada(NumericHelper.ZERO);
+        setDescripcion(TextHelper.EMPTY);
+    }
+
+    public ServicioDTO(final int id, final String nombreServicio, final int duracionEstimada, final String descripcion) {
+        setId(id);
+        setNombreServicio(nombreServicio);
+        setDuracionEstimada(duracionEstimada);
+        setDescripcion(descripcion);
+    }
+
+    public static final ServicioDTO build() {
+        return new ServicioDTO();
+    }
+
+    
+    public final int getId() {
+        return id;
+    }
+
+    public final String getNombreServicio() {
+        return nombreServicio;
+    }
+
+    public final int getDuracionEstimada() {
+        return duracionEstimada;
+    }
+
+    public final String getDescripcion() {
+        return descripcion;
+    }
+
+    public final ServicioDTO setId(final int id) {
+        this.id = id;
+        return this;
+    }
+
+    public final ServicioDTO setNombreServicio(final String nombreServicio) {
+        this.nombreServicio = TextHelper.applyTrim(nombreServicio);
+        return this;
+    }
+
+    public final ServicioDTO setDuracionEstimada(final int duracionEstimada) {
+        this.duracionEstimada = duracionEstimada;
+        return this;
+    }
+
+    public final ServicioDTO setDescripcion(final String descripcion) {
+        this.descripcion = TextHelper.applyTrim(descripcion);
+        return this;
+    }
+}

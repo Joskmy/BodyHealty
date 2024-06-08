@@ -1,0 +1,117 @@
+package co.edu.uco.bodyhealty.dto;
+
+public final class PacienteDTO {
+	private int id;
+	private TipoDocumentoDTO tipoId;
+	private String numeroDocumento;
+	private String primerNombre;
+	private String segundoNombre;
+	private String primerApellido;
+	private String segundoApellido;
+	private String correoElectronico;
+	private String telefono;
+	private String cuenta;
+	private String contrasenia;
+	
+	public PacienteDTO() {
+		setTipoId(TipoDocumentoDTO.build());
+        setNumeroDocumento(numeroDocumento);
+        setPrimerNombre(primerNombre);
+        setSegundoNombre(segundoNombre);
+        setPrimerApellido(primerApellido);
+        setSegundoApellido(segundoApellido);
+        setCorreoElectronico(correoElectronico);
+        setTelefono(telefono);
+        setCuenta(cuenta);
+        setContrasenia(contrasenia);
+	}
+
+	public final int getId() {
+		return id;
+	}
+
+	public final TipoDocumentoDTO getTipoId() {
+		return tipoId;
+	}
+
+	public final String getNumeroDocumento() {
+		return numeroDocumento;
+	}
+
+	public final String getPrimerNombre() {
+		return primerNombre;
+	}
+
+	public final String getSegundoNombre() {
+		return segundoNombre;
+	}
+
+	public final String getPrimerApellido() {
+		return primerApellido;
+	}
+
+	public final String getSegundoApellido() {
+		return segundoApellido;
+	}
+
+	public final String getCorreoElectronico() {
+		return correoElectronico;
+	}
+
+	public final String getTelefono() {
+		return telefono;
+	}
+
+	public final String getCuenta() {
+		return cuenta;
+	}
+
+	public final String getContrasenia() {
+		return contrasenia;
+	}
+
+	private final setId(final Long id) {
+		this.id = id;
+	}
+
+	private final setTipoId(final TipoDocumentoDTO tipoId) {
+		this.tipoId = tipoId;
+	}
+
+	private final setNumeroDocumento(final String numeroDocumento) {
+		this.numeroDocumento = numeroDocumento;
+	}
+
+	private final setPrimerNombre(final String primerNombre) {
+		this.primerNombre = primerNombre;
+	}
+
+	private final setSegundoNombre(final String segundoNombre) {
+		this.segundoNombre = segundoNombre;
+	}
+
+	private final setPrimerApellido(final String primerApellido) {
+		this.primerApellido = primerApellido;
+	}
+
+	private final setSegundoApellido(final String segundoApellido) {
+		this.segundoApellido = segundoApellido;
+	}
+
+	private final setCorreoElectronico(final String correoElectronico) {
+		this.correoElectronico = correoElectronico;
+	}
+
+	private final setTelefono(final String telefono) {
+		this.telefono = telefono;
+	}
+
+	private final void setCuenta(final String cuenta) {
+		this.cuenta = cuenta;
+	}
+
+	private final void setContrasenia(final String contrasenia) {
+		this.contrasenia = contrasenia;
+	}
+
+}

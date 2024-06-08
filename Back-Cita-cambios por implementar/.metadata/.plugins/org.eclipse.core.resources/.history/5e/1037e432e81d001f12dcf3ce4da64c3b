@@ -1,0 +1,148 @@
+package co.edu.uco.bodyhealty.data.dao.sql.postgresql;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import co.edu.uco.bodyhealty.crosscutting.exceptions.custom.DataBodyHealtyException;
+import co.edu.uco.bodyhealty.crosscutting.exceptions.messagecatalog.MessageCatalogStrategy;
+import co.edu.uco.bodyhealty.crosscutting.exceptions.messagecatalog.data.CodigoMensaje;
+import co.edu.uco.bodyhealty.data.dao.AgendaDAO;
+import co.edu.uco.bodyhealty.data.dao.CitaDAO;
+import co.edu.uco.bodyhealty.data.dao.sql.SqlConnection;
+import co.edu.uco.bodyhealty.entity.AgendaEntity;
+import co.edu.uco.bodyhealty.entity.CitaEntity;
+
+public final class CitaPostgreSqlDAO extends SqlConnection implements CitaDAO {
+	public CitaPostgreSqlDAO(final Connection connection) {
+		super(connection);
+	}
+
+	@Override
+	public final void agendar(final CitaEntity entidad) {
+	    final var sentenciaSql = new StringBuilder();
+
+	    sentenciaSql.append("INSERT INTO CitaMedica( ");
+	    sentenciaSql.append("ServicioId, TurnoId, PacienteId, CubiculoId, EstadoCitaId) ");
+	    sentenciaSql.append("VALUES (?, ?, ?, ?, ?, ?)");
+
+	    try (final PreparedStatement sentenciaPreparada = getConnection().prepareStatement(sentenciaSql.toString())) {
+	        sentenciaPreparada.setInt(1, entidad.getServicio().getId());
+	        sentenciaPreparada.setInt(2, entidad.getTurno().getId());
+	        sentenciaPreparada.setInt(3, entidad.getPaciente().getId());
+	        sentenciaPreparada.setInt(4, entidad.getCubiculo().getId());
+	        sentenciaPreparada.setInt(5, entidad.getEstadoCita().getId());
+
+	        sentenciaPreparada.executeUpdate();
+	    } catch (final SQLException exception) {
+	        var mensajeUsuario = "No ha sido posible llevar a cabo el registro de la información de la nueva cita médica. Por favor intente de nuevo y en caso de persistir el problema, comuníquese con el administrador de BodyHealty...";
+	        var mensajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00023);
+
+	        throw new DataBodyHealtyException(mensajeTecnico, mensajeUsuario, exception);
+	    } catch (final Exception exception) {
+	        var mensajeUsuario = "No ha sido posible llevar a cabo el registro de la información de la nueva cita médica. Por favor intente de nuevo y en caso de persistir el problema, comuníquese con el administrador de BodyHealty...";
+	        var mensajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00024);
+
+	        throw new DataBodyHealtyException(mensajeTecnico, mensajeUsuario, exception);
+	    }
+	}
+	
+	@Override
+	public final void actualizar(final CitaEntity entidad) {
+	    final var sentenciaSql = new StringBuilder();
+
+	    sentenciaSql.append("UPDATE CitaMedica ");
+	    sentenciaSql.append("SET ServicioId = ?, TurnoId = ?, PacienteId = ?, CubiculoId = ?, EstadoCitaId = ? ");
+	    sentenciaSql.append("WHERE id = ?");
+
+	    try (final PreparedStatement sentenciaPreparada = getConnection().prepareStatement(sentenciaSql.toString())) {
+	        sentenciaPreparada.setInt(1, entidad.getServicio().getId());
+	        sentenciaPreparada.setInt(2, entidad.getTurno().getId());
+	        sentenciaPreparada.setInt(3, entidad.getPaciente().getId());
+	        sentenciaPreparada.setInt(4, entidad.getCubiculo().getId());
+	        sentenciaPreparada.setInt(5, entidad.getEstadoCita().getId());
+	        sentenciaPreparada.setInt(6, entidad.getId());
+
+	        sentenciaPreparada.executeUpdate();
+	    } catch (final SQLException exception) {
+	        var mensajeUsuario = "No ha sido posible llevar a cabo la actualización de la información de la cita médica. Por favor intente de nuevo y en caso de persistir el problema, comuníquese con el administrador de BodyHealty...";
+	        var mensajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00023, entidad.getId());
+
+	        throw new DataBodyHealtyException(mensajeTecnico, mensajeUsuario, exception);
+	    } catch (final Exception exception) {
+	        var mensajeUsuario = "No ha sido posible llevar a cabo la actualización de la información de la cita médica. Por favor intente de nuevo y en caso de persistir el problema, comuníquese con el administrador de BodyHealty...";
+	        var mensajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00024, entidad.getId());
+
+	        throw new DataBodyHealtyException(mensajeTecnico, mensajeUsuario, exception);
+	    }
+	}
+
+
+	@Override
+	public final void eliminar(final int id) {
+	    final var sentenciaSql = new StringBuilder();
+
+	    sentenciaSql.append("DELETE FROM CitaMedica ");
+	    sentenciaSql.append("WHERE id = ?");
+
+	    try (final PreparedStatement sentenciaPreparada = getConnection().prepareStatement(sentenciaSql.toString())) {
+	        sentenciaPreparada.setInt(1, id);
+
+	        sentenciaPreparada.executeUpdate();
+	    } catch (final SQLException exception) {
+	        var mensajeUsuario = "No ha sido posible llevar a cabo la eliminación de la cita médica. Por favor intente de nuevo y en caso de persistir el problema, comuníquese con el administrador de BodyHealty...";
+	        var mensajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00023, id);
+
+	        throw new DataBodyHealtyException(mensajeTecnico, mensajeUsuario, exception);
+	    } catch (final Exception exception) {
+	        var mensajeUsuario = "No ha sido posible llevar a cabo la eliminación de la cita médica. Por favor intente de nuevo y en caso de persistir el problema, comuníquese con el administrador de BodyHealty...";
+	        var mensajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00024, id);
+
+	        throw new DataBodyHealtyException(mensajeTecnico, mensajeUsuario, exception);
+	    }
+	}
+
+/*
+	@Override
+	public final List<CitaEntity> consultar(final CitaEntity entidad) {
+	    final var listaCitas = new ArrayList()<CitaEntity>();
+	    final var sentenciaSql = new StringBuilder();
+
+	    sentenciaSql.append("SELECT id, ServicioId, TurnoId, PacienteId, CubiculoId, EstadoCitaId ");
+	    sentenciaSql.append("FROM CitaMedica ");
+
+	    try (final PreparedStatement sentenciaPreparada = getConnection().prepareStatement(sentenciaSql.toString())) {
+	        try (final ResultSet resultados = sentenciaPreparada.executeQuery()) {
+	            while (resultados.next()) {
+	                CitaEntity citaTmp = new CitaEntity();
+	                citaTmp.setId(resultados.getInt("id"));
+	                listaCitas.add(citaTmp);
+	            }
+	        } catch (final SQLException exception) {
+	            var mensajeUsuario = "No ha sido posible llevar a cabo la consulta de la información de las citas médicas. Por favor intente de nuevo y en caso de persistir el problema, comuníquese con el administrador de BodyHealty...";
+	            var mensajeTecnico = "Se ha presentado un problema ejecutando la sentencia SQL de consulta de las citas médicas";
+
+	            throw new DataBodyHealtyException(mensajeTecnico, mensajeUsuario, exception);
+	        } catch (final DataBodyHealtyException exception) {
+	            throw exception;
+	        }
+	    } catch (final SQLException exception) {
+	        var mensajeUsuario = "No ha sido posible llevar a cabo la consulta de la información de las citas médicas. Por favor intente de nuevo y en caso de persistir el problema, comuníquese con el administrador de BodyHealty...";
+	        var mensajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00023);
+
+	        throw new DataBodyHealtyException(mensajeTecnico, mensajeUsuario, exception);
+	    } catch (final Exception exception) {
+	        var mensajeUsuario = "No ha sido posible llevar a cabo la consulta de la información de las citas médicas. Por favor intente de nuevo y en caso de persistir el problema, comuníquese con el administrador de BodyHealty...";
+	        var mensajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00024);
+
+	        throw new DataBodyHealtyException(mensajeTecnico, mensajeUsuario, exception);
+	    }
+
+	    return listaCitas;
+	}
+
+	*/
+
+}

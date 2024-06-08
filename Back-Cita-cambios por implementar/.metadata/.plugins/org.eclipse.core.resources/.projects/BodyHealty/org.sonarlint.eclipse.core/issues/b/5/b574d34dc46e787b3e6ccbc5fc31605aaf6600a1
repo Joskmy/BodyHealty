@@ -1,0 +1,32 @@
+
+v	java:S125m"<This block of commented-out lines of code should be removed.8ìÔ¬ü1b 06ae4d666444bf81df82db91ecb49dc1h
+}
+java:S2094"BRemove this empty class, write its code or make it an "interface".8£÷Ø¬ü1b 0c14c66b04a8946e7dda82ad22c2e1ebh
+v	java:S125"<This block of commented-out lines of code should be removed.8£÷Ø¬ü1b 9c6ae33be0d9c96e9dfa3266f2fffb13h
+k
+java:S1128"0Remove this unused import 'java.sql.Connection'.8£÷Ø¬ü1b 7362a2176bc96b3ab49349f3f5494a8fh
+r
+java:S1128"7Remove this unused import 'java.sql.PreparedStatement'.8£÷Ø¬ü1b e0b724102b8958bc7a79bbbf188dbee6h
+m
+java:S1128"2Remove this unused import 'java.sql.SQLException'.8£÷Ø¬ü1b cc300784780d6f9193c0fdccdf64c0a6h
+k
+java:S1128"0Remove this unused import 'java.util.ArrayList'.8£÷Ø¬ü1b 510ef3bd202c030c041eba1094753b66h
+f
+java:S1128"+Remove this unused import 'java.util.List'.8£÷Ø¬ü1b 647165940d2971f696436f6a7da1f89dh
+¤
+java:S1128	"iRemove this unused import 'co.edu.uco.bodyhealty.crosscutting.exceptions.custom.DataBodyHealtyException'.8£÷Ø¬ü1b 3a4d4072beca8ce0398173bd79d63cbch
+«
+java:S1128
+"pRemove this unused import 'co.edu.uco.bodyhealty.crosscutting.exceptions.messagecatalog.MessageCatalogStrategy'.8£÷Ø¬ü1b fb4504bb39e9d7a70c65b52a2edf9de4h
+§
+java:S1128"lRemove this unused import 'co.edu.uco.bodyhealty.crosscutting.exceptions.messagecatalog.data.CodigoMensaje'.8£÷Ø¬ü1b b767b4beb5241d35b242b79819598678h
+€
+java:S1128"ERemove this unused import 'co.edu.uco.bodyhealty.data.dao.AgendaDAO'.8£÷Ø¬ü1b eac4cf6f9f0a88d5d0f8c7012a468926h
+~
+java:S1128"CRemove this unused import 'co.edu.uco.bodyhealty.data.dao.CitaDAO'.8£÷Ø¬ü1b f2f405ff682552524400568120f09bb5h
+ˆ
+java:S1128"MRemove this unused import 'co.edu.uco.bodyhealty.data.dao.sql.SqlConnection'.8£÷Ø¬ü1b fc7be1a921ae50c120d15e65fe5cf8b9h
+
+java:S1128"FRemove this unused import 'co.edu.uco.bodyhealty.entity.AgendaEntity'.8£÷Ø¬ü1b 96f08a1fc34d58735c56468c3030bc60h
+
+java:S1128"DRemove this unused import 'co.edu.uco.bodyhealty.entity.CitaEntity'.8£÷Ø¬ü1b ef053216ae86f61cee52e1451b8cfda2h

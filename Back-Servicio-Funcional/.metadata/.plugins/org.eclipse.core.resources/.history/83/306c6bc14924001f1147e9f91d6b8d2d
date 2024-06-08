@@ -1,0 +1,12 @@
+package co.edu.uco.bodyhealty.data.dao.sql.postgresql;
+
+import java.sql.Connection;
+
+import co.edu.uco.bodyhealty.data.dao.ServicioDAO;
+import co.edu.uco.bodyhealty.data.dao.sql.SqlConnection;
+
+public final class ServicioPostgreSqlDAO extends SqlConnection implements ServicioDAO{
+	public ServicioPostgreSqlDAO(final Connection connection) {
+		super(connection);
+	}
+}

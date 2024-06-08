@@ -1,0 +1,40 @@
+package co.edu.uco.bodyhealty.dto;
+
+import static co.edu.uco.bodyhealty.crosscutting.helpers.TextHelpe;
+
+public final class TipoDocumentoDTO {
+	private int id;
+    private String nombre;
+
+    // Constructor vacío
+    public TipoDocumentoDTO() {
+        // Inicializa los valores por defecto o vacíos según tus necesidades
+        setNombre("");
+    }
+
+    // Constructor con parámetros
+    public TipoDocumentoDTO(int id, String nombre) {
+        this.id = id;
+        this.nombre = TextHelper.applyTrim(nombre);
+    }
+
+    // Getters y setters
+    public int getId() {
+        return id;
+    }
+
+    public TipoDocumentoDTO setId(int id) {
+        this.id = id;
+        return this;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public TipoDocumentoDTO setNombre(String nombre) {
+        this.nombre = TextHelper.applyTrim(nombre);
+        return this;
+    }
+}
+

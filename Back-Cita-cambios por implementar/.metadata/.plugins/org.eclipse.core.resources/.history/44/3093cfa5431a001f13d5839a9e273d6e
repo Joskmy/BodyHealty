@@ -1,0 +1,15 @@
+package co.edu.uco.bodyhealty.dto;
+
+public final class PacienteDTO {
+	private Long id;
+	private TipoDocumentoDTO tipoId;
+	private String numeroDocumento;
+	private String primerNombre;
+	private String segundoNombre;
+	private String primerApellido;
+	private String segundoApellido;
+	private String correoElectronico;
+	private String telefono;
+	private String cuenta;
+	private String contrasena;
+}

@@ -1,0 +1,14 @@
+package co.edu.uco.bodyhealty.business.fecade.concrete;
+
+import co.edu.uco.bodyhealty.business.fecade.ConsultarServiciosFachada;
+import co.edu.uco.bodyhealty.data.dao.factory.DAOFactory;
+import co.edu.uco.bodyhealty.data.dao.factory.enums.Factory;
+
+public final class ConsultarServiciosFachadaImpl implements ConsultarServiciosFachada {
+		
+	private DAOFactory factory;
+	
+	public ConsultarServiciosFachadaImpl() {
+		factory= DAOFactory.getFactory(Factory.POSTGRESQL);
+	}	
+}

@@ -1,0 +1,47 @@
+package co.edu.uco.bodyhealty.entity;
+
+import co.edu.uco.bodyhealty.crosscutting.helpers.NumericHelper;
+import co.edu.uco.bodyhealty.crosscutting.helpers.TextHelper;
+
+public final class EstadoCitaEntity {
+	private int id;
+    private String estado;
+
+    private EstadoCitaEntity(final int id) {
+        setId(id);
+        setEstado(TextHelper.EMPTY);
+    }
+
+    private EstadoCitaEntity(final int id, final String estado) {
+        setId(id);
+        setEstado(estado);
+    }
+
+    public static final EstadoCitaEntity build(final int id) {
+        return new EstadoCitaEntity(id);
+    }
+
+    public static final EstadoCitaEntity build(final int id, final String estado) {
+        return new EstadoCitaEntity(id, estado);
+    }
+    
+    protected static final EstadoCitaEntity build() {
+		return new EstadoCitaEntity(NumericHelper.ZERO);
+	}
+
+    public final int getId() {
+        return id;
+    }
+
+    public final String getEstado() {
+        return estado;
+    }
+
+    private final void setId(final int id) {
+        this.id = id;
+    }
+
+    private final void setEstado(final String estado) {
+        this.estado = TextHelper.applyTrim(estado);
+    }
+}

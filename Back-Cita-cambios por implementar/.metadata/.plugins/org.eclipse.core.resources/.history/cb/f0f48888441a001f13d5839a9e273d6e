@@ -1,0 +1,16 @@
+package co.edu.uco.bodyhealty.crosscutting.helpers;
+
+public class Snippet {
+	setTipoId("");
+	        setNumeroDocumento("");
+	        setPrimerNombre("");
+	        setSegundoNombre("");
+	        setPrimerApellido("");
+	        setSegundoApellido("");
+	        setCorreoElectronico("");
+	        setTelefono("");
+	        setCuenta("");
+	        setContrasena("");
+	    }
+}
+

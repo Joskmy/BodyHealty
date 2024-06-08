@@ -1,0 +1,51 @@
+package co.edu.uco.bodyhealty.business.assembler.entity.concrete;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import co.edu.uco.bodyhealty.business.assembler.entity.EntityDomainAssembler;
+import co.edu.uco.bodyhealty.business.domain.PersonalDomain;
+import co.edu.uco.bodyhealty.business.domain.TipoDocumentoDomain;
+import co.edu.uco.bodyhealty.crosscutting.helpers.ObjectHelper;
+import co.edu.uco.bodyhealty.entity.PersonalEntity;
+import co.edu.uco.bodyhealty.entity.TipoDocumentoEntity;
+
+public class PersonalEntityDomainAssembler implements EntityDomainAssembler<PersonalDomain, PersonalEntity> {
+    private static final EntityDomainAssembler<PersonalDomain, PersonalEntity> instancia = new PersonalEntityDomainAssembler();
+
+    private static final EntityDomainAssembler<TipoDocumentoDomain, TipoDocumentoEntity> tipoDocumendoAssempler = TipoDocumentoEntityDomainAssembler.obtenerInstancia();
+    
+    private PersonalEntityDomainAssembler() {
+        super();
+    }
+
+    public static final EntityDomainAssembler<PersonalDomain, PersonalEntity> obtenerInstancia() {
+        return instancia;
+    }
+
+    @Override
+    public final PersonalDomain ensamblarDominio(final PersonalEntity entidad) {
+        var personalEntityTmp = ObjectHelper.getObjectHelper().getDefault(entidad, PersonalEntity.build(0));
+        var tipoDocumentoDominio = tipoDocumendoAssempler.ensamblarDominio(personalEntityTmp.getTipoId())
+        return PersonalDomain.crear(personalEntityTmp.getId(), personalEntityTmp.getTipoId(), personalEntityTmp.getNumeroDocumento(), personalEntityTmp.getPrimerNombre(), personalEntityTmp.getSegundoNombre(), personalEntityTmp.getPrimerApellido(), personalEntityTmp.getSegundoApellido(), personalEntityTmp.getCorreoElectronico(), personalEntityTmp.getTelefono(), personalEntityTmp.getCuenta(), personalEntityTmp.getContrasenia());
+    }
+
+    @Override
+    public final PersonalEntity ensablarEntidad(final PersonalDomain dominio) {
+        var personalDomainTmp = ObjectHelper.getObjectHelper().getDefault(dominio, PersonalDomain.crear());
+        return PersonalEntity.build(personalDomainTmp.getId(), personalDomainTmp.getTipoId(), personalDomainTmp.getNumeroDocumento(), personalDomainTmp.getPrimerNombre(), personalDomainTmp.getSegundoNombre(), personalDomainTmp.getPrimerApellido(), personalDomainTmp.getSegundoApellido(), personalDomainTmp.getCorreoElectronico(), personalDomainTmp.getTelefono(), personalDomainTmp.getCuenta(), personalDomainTmp.getContrasenia());
+    }
+
+    @Override
+    public final List<PersonalDomain> ensamblarListaDominios(final List<PersonalEntity> listaEntidades) {
+        var listaEntidadesTmp = ObjectHelper.getObjectHelper().getDefault(listaEntidades, new ArrayList<PersonalEntity>());
+        var resultados = new ArrayList<PersonalDomain>();
+
+        for (PersonalEntity personalEntity : listaEntidadesTmp) {
+            var personalDomainTmp = ensamblarDominio(personalEntity);
+            resultados.add(personalDomainTmp);
+        }
+
+        return resultados;
+    }
+}

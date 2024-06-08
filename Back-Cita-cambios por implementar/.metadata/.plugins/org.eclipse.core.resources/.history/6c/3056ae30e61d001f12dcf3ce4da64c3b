@@ -1,0 +1,63 @@
+package co.edu.uco.bodyhealty.business.usecase.concrete;
+
+import java.time.LocalTime;
+import java.util.List;
+
+import co.edu.uco.bodyhealty.business.assembler.entity.concrete.AgendaEntityDomainAssembler;
+import co.edu.uco.bodyhealty.business.assembler.entity.concrete.CitaEntityDomainAssembler;
+import co.edu.uco.bodyhealty.business.domain.CitaDomain;
+import co.edu.uco.bodyhealty.business.usecase.AgendarCita;
+import co.edu.uco.bodyhealty.crosscutting.exceptions.custom.BusinessBodyHealtyException;
+import co.edu.uco.bodyhealty.data.dao.factory.DAOFactory;
+import co.edu.uco.bodyhealty.dto.AgendaDTO;
+import co.edu.uco.bodyhealty.entity.AgendaEntity;
+import co.edu.uco.bodyhealty.entity.CitaEntity;
+import co.edu.uco.bodyhealty.entity.TurnoEntity;
+
+public class AgendarCitaImpl implements AgendarCita {
+	private final DAOFactory factory;
+
+    public AgendarCitaImpl(DAOFactory factory) {
+        this.factory = factory;
+    }
+
+    @Override
+    public void ejecutar( CitaDomain cita) {
+        validarTurnoDisponible(cita.getTurno().getId());
+        validarPacienteExistente(cita.getPaciente().getId());
+        validarCubiculoDisponible(cita.getCubiculo().getId());
+
+        var citaEntity = CitaEntityDomainAssembler.obtenerInstancia().ensamblarEntidad(cita);
+        factory.getAgendarDAO().agendar(citaEntity);
+    }
+    
+    
+    
+
+    private void validarTurnoDisponible(int id, int idAgenda, LocalTime horaInicio, LocalTime horaFin) {
+    	var agendaEntity = AgendaEntity.build(idAgenda);
+    	var turnoEntity = TurnoEntity.build(0, agendaEntity, horaInicio, horaFin);
+        
+    	final List<CitaEntity> resultados = factory.getAgendarDAO().consultar(CitaEntity);
+    	
+    	if (!resultados.isEmpty()) {
+    		var mensajeUsuario = "Ya existe una Cita en ese turno";
+    		throw new BusinessBodyHealtyException(mensajeUsuario);
+    	}
+    	
+    }
+
+    private void validarPacienteExistente(int idPaciente) {
+        // Lógica para validar si el paciente existe en el sistema
+        // Por ejemplo, consultar la base de datos de pacientes
+        // Si no existe, lanzar una excepción
+    }
+
+    private void validarCubiculoDisponible(int idCubiculo) {
+        // Lógica para validar si el cubículo está disponible en el turno de la cita
+        // Por ejemplo, consultar la base de datos para verificar si hay citas existentes para el cubículo en el mismo horario
+        // Si no está disponible, lanzar una excepción
+    }
+
+    // Otras validaciones necesarias...
+}

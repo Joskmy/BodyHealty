@@ -1,0 +1,30 @@
+package co.edu.uco.bodyhealty.crosscutting.helpers;
+
+public final class NumericHelper {
+	public static final int ZERO = 0;
+
+	private NumericHelper() {
+		super();
+	}
+
+	public static final int convertToInt(final String value) {
+
+		try {
+			return Integer.valueOf(value);
+		} catch (Exception exception) {
+			return 0;
+		}
+
+	}
+	
+	public static final String cleanNumericString(final String value) {
+        if (value == null) {
+            return "";
+        }
+        return value.replaceAll("[^\\d]", "");
+    }
+
+    public static final int convertToCleanInt(final String value) {
+        return convertToInt(cleanNumericString(value));
+    }
+}	

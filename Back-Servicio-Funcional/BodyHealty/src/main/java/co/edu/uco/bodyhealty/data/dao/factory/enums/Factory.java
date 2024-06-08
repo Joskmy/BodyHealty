@@ -1,0 +1,7 @@
+package co.edu.uco.bodyhealty.data.dao.factory.enums;
+
+public enum Factory {
+
+	AZURESQL, POSTGRESQL, ORACLE, SQL_SERVER, MYSQL
+	
+}

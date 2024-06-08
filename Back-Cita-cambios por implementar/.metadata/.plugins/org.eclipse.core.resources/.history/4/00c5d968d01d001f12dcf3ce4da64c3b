@@ -1,0 +1,41 @@
+package co.edu.uco.bodyhealty.business.domain;
+
+import co.edu.uco.bodyhealty.crosscutting.helpers.TextHelper;
+
+public class EstadoCitaDomain {
+	private int id;
+    private String estado;
+
+    public EstadoCitaDomain() {
+        setEstado(TextHelper.EMPTY);
+    }
+
+    public EstadoCitaDomain(final int id, final String estado) {
+        setId(id);
+        setEstado(estado);
+    }
+
+    public static final EstadoCitaDomain crear() {
+        return new EstadoCitaDomain();
+    }
+    
+    public static final EstadoCitaDomain crear(final int id, final String estado) {
+        return new EstadoCitaDomain();
+    }
+
+    public final int getId() {
+        return id;
+    }
+
+    public final String getEstado() {
+        return estado;
+    }
+
+    public final void setId(final int id) {
+        this.id = id;
+    }
+
+    public final void setEstado(final String estado) {
+        this.estado = TextHelper.applyTrim(estado);
+    }
+}

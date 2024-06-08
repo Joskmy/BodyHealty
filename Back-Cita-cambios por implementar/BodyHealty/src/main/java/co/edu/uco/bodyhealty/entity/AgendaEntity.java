@@ -1,0 +1,86 @@
+package co.edu.uco.bodyhealty.entity;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+import co.edu.uco.bodyhealty.crosscutting.helpers.DateHelper;
+import co.edu.uco.bodyhealty.crosscutting.helpers.ObjectHelper;
+import static co.edu.uco.bodyhealty.crosscutting.helpers.NumericHelper.ZERO;
+
+public final class AgendaEntity {
+	private int id;
+	private LocalDate fecha;
+	private LocalTime horaInicio;
+	private LocalTime horaFin;
+	private PersonalEntity personal;
+
+	private AgendaEntity(final int id) {
+		setId(id);
+		setFecha(DateHelper.getDefaultDate());
+		setHoraInicio(DateHelper.getDefaultTime());
+		setHoraFin(DateHelper.getDefaultTime());
+		setPersonal(PersonalEntity.build());
+	}
+
+	private AgendaEntity(final int id, final LocalDate fecha, final LocalTime horaInicio, final LocalTime horaFin,
+			final PersonalEntity personal) {
+		setId(id);
+		setFecha(fecha);
+		setHoraInicio(horaInicio);
+		setHoraFin(horaFin);
+		setPersonal(personal);
+	}
+
+	public static final AgendaEntity build(final int id) {
+		return new AgendaEntity(id);
+	}
+
+	public static final AgendaEntity build(final int id, final LocalDate fecha, final LocalTime horaInicio,
+			final LocalTime horaFin, final PersonalEntity personal) {
+		return new AgendaEntity(id, fecha, horaInicio, horaFin, personal);
+	}
+	
+	protected static final AgendaEntity build() {
+		return new AgendaEntity(ZERO);
+	}
+
+	public final int getId() {
+		return id;
+	}
+
+	public final LocalDate getFecha() {
+		return fecha;
+	}
+
+	public final LocalTime getHoraInicio() {
+		return horaInicio;
+	}
+
+	public final LocalTime getHoraFin() {
+		return horaFin;
+	}
+
+	public final PersonalEntity getPersonal() {
+		return personal;
+	}
+
+	private final void setId(final int id) {
+		this.id = id;
+	}
+
+	private final void setFecha(final LocalDate fecha) {
+		this.fecha = fecha;
+	}
+
+	private final void setHoraInicio(final LocalTime horaInicio) {
+		this.horaInicio = horaInicio;
+	}
+
+	private final void setHoraFin(final LocalTime horaFin) {
+		this.horaFin = horaFin;
+	}
+
+	private final void setPersonal(final PersonalEntity personal) {
+		this.personal = ObjectHelper.getObjectHelper().getDefault(personal, PersonalEntity.build());
+	}
+}

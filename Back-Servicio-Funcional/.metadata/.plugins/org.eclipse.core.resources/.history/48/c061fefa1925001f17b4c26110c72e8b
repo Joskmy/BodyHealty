@@ -1,0 +1,102 @@
+package co.edu.uco.bodyhealty.data.dao.sql.postgresql;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import co.edu.uco.bodyhealty.crosscutting.exceptions.custom.DataBodyHealtyException;
+import co.edu.uco.bodyhealty.crosscutting.exceptions.messagecatalog.MessageCatalogStrategy;
+import co.edu.uco.bodyhealty.crosscutting.exceptions.messagecatalog.data.CodigoMensaje;
+import co.edu.uco.bodyhealty.data.dao.ServicioDAO;
+import co.edu.uco.bodyhealty.data.dao.sql.SqlConnection;
+import co.edu.uco.bodyhealty.entity.ServicioEntity;
+
+public final class ServicioPostgreSqlDAO extends SqlConnection implements ServicioDAO {
+	public ServicioPostgreSqlDAO(final Connection connection) {
+		super(connection);
+	}
+
+	@Override
+	public final void agregar(final ServicioEntity entidad) {
+
+		final var sentenciaSql = new StringBuilder();
+
+		sentenciaSql.append("INSERT INTO Servicio(nombre, duracion, descripcion) ");
+		sentenciaSql.append("VALUES (?, ?, ?)");
+
+		try (final PreparedStatement sentenciaPreparada = getConnection().prepareStatement(sentenciaSql.toString())) {
+			sentenciaPreparada.setString(1, entidad.getNombreServicio());
+			sentenciaPreparada.setInt(2, entidad.getDuracionEstimada());
+			sentenciaPreparada.setString(3, entidad.getDescripcion());
+
+			sentenciaPreparada.executeUpdate();
+		} catch (final SQLException exception) {
+			var mensajeUsuario = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00027);
+			var mensajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00023);
+
+			throw new DataBodyHealtyException(mensajeTecnico, mensajeUsuario, exception);
+		} catch (final Exception exception) {
+			var mensajeUsuario = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00027);
+			var mensajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00024);
+
+			throw new DataBodyHealtyException(mensajeTecnico, mensajeUsuario, exception);
+		}
+	}
+	@Override
+	public List<ServicioEntity> consultar(final ServicioEntity entidad) {
+	    final var listaServicios = new ArrayList<ServicioEntity>();
+	    final var sentenciaSql = new StringBuilder();
+	    boolean whereClauseAdded = false; // Variable para verificar si se ha agregado la cláusula WHERE
+
+	    sentenciaSql.append("SELECT id, nombre, duracion, descripcion ");
+	    sentenciaSql.append("FROM Servicio");
+
+	    // Verificar si se necesita agregar la cláusula WHERE
+	    if (entidad.getNombreServicio() != null && !entidad.getNombreServicio().isEmpty()) {
+	        sentenciaSql.append(" WHERE nombre = ?");
+	        whereClauseAdded = true;
+	    }
+
+	    try (final PreparedStatement sentenciaPreparada = getConnection().prepareStatement(sentenciaSql.toString())) {
+	        // Si se agregó la cláusula WHERE, establecer el valor del parámetro
+	        if (whereClauseAdded) {
+	            sentenciaPreparada.setString(1, entidad.getNombreServicio());
+	        }
+
+	        try (final ResultSet resultados = sentenciaPreparada.executeQuery()) {
+	            while (resultados.next()) {
+	                ServicioEntity servicioTmp = ServicioEntity.build(
+	                    resultados.getInt("id"),
+	                    resultados.getString("nombre"),
+	                    resultados.getInt("duracion"),
+	                    resultados.getString("descripcion")
+	                );
+	                listaServicios.add(servicioTmp);
+	            }
+	        } catch (final SQLException exception) {
+	            var mensajeUsuario = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00028);
+	            var mensajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00029);
+
+	            throw new DataBodyHealtyException(mensajeTecnico, mensajeUsuario, exception);
+	        } catch (final DataBodyHealtyException exception) {
+	            throw exception;
+	        }
+	    } catch (final SQLException exception) {
+	        var mensajeUsuario = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00028);
+	        var mensajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00023);
+
+	        throw new DataBodyHealtyException(mensajeTecnico, mensajeUsuario, exception);
+	    } catch (final Exception exception) {
+	        var mensajeUsuario = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00028);
+	        var mensajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00024);
+
+	        throw new DataBodyHealtyException(mensajeTecnico, mensajeUsuario, exception);
+	    }
+
+	    return listaServicios;
+	}
+
+}

@@ -1,0 +1,49 @@
+package co.edu.uco.bodyhealty.business.domain;
+
+import co.edu.uco.bodyhealty.crosscutting.helpers.ObjectHelper;
+import co.edu.uco.bodyhealty.crosscutting.helpers.TextHelper;
+
+public class CubiculoDomain {
+	 private int id;
+	    private TipoCubiculoDomain tipoCubiculo;
+	    private String nombre;
+
+	    public CubiculoDomain() {
+	        setTipoCubiculo(TipoCubiculoDomain.crear());
+	        setNombre(TextHelper.EMPTY);
+	    }
+
+	    public CubiculoDomain(final int id, final TipoCubiculoDomain tipoCubiculo, final String nombre) {
+	        setId(id);
+	        setTipoCubiculo(tipoCubiculo);
+	        setNombre(nombre);
+	    }
+
+	    public static final CubiculoDomain build() {
+	        return new CubiculoDomain();
+	    }
+
+	    public final int getId() {
+	        return id;
+	    }
+
+	    public final TipoCubiculoDomain getTipoCubiculo() {
+	        return tipoCubiculo;
+	    }
+
+	    public final String getNombre() {
+	        return nombre;
+	    }
+
+	    public final void setId(final int id) {
+	        this.id = id;
+	    }
+
+	    public final void setTipoCubiculo(final TipoCubiculoDomain tipoCubiculo) {
+	        this.tipoCubiculo = ObjectHelper.getObjectHelper().getDefault(tipoCubiculo, TipoCubiculoDomain.build());
+	    }
+
+	    public final void setNombre(final String nombre) {
+	        this.nombre = TextHelper.applyTrim(nombre);
+	    }
+}

@@ -1,0 +1,41 @@
+package co.edu.uco.bodyhealty.data.dao.sql.postgresql;
+
+import java.sql.Connection;
+
+import co.edu.uco.bodyhealty.data.dao.ServicioDAO;
+import co.edu.uco.bodyhealty.data.dao.sql.SqlConnection;
+import co.edu.uco.bodyhealty.entity.ServicioEntity;
+
+public final class ServicioPostgreSqlDAO extends SqlConnection implements ServicioDAO{
+	public ServicioPostgreSqlDAO(final Connection connection) {
+		super(connection);
+	}
+	
+	@Override
+	public final void agendar(final ServicioEntity entidad) {
+	    final var sentenciaSql = new StringBuilder();
+
+	    sentenciaSql.append("INSERT INTO Servicio( ");
+	    sentenciaSql.append("NombreServicio, DuracionEstimada, Descripcion) ");
+	    sentenciaSql.append("VALUES (?, ?, ?)");
+
+	    try (final PreparedStatement sentenciaPreparada = getConnection().prepareStatement(sentenciaSql.toString())) {
+	        sentenciaPreparada.setString(1, entidad.getNombreServicio());
+	        sentenciaPreparada.setInt(2, entidad.getDuracionEstimada());
+	        sentenciaPreparada.setString(3, entidad.getDescripcion());
+
+	        sentenciaPreparada.executeUpdate();
+	    } catch (final SQLException exception) {
+	        var mensajeUsuario = "No ha sido posible llevar a cabo el registro de la información del nuevo servicio. Por favor intente de nuevo y en caso de persistir el problema, comuníquese con el administrador de BodyHealty...";
+	        var mensajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00023);
+
+	        throw new DataBodyHealtyException(mensajeTecnico, mensajeUsuario, exception);
+	    } catch (final Exception exception) {
+	        var mensajeUsuario = "No ha sido posible llevar a cabo el registro de la información del nuevo servicio. Por favor intente de nuevo y en caso de persistir el problema, comuníquese con el administrador de BodyHealty...";
+	        var mensajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00024);
+
+	        throw new DataBodyHealtyException(mensajeTecnico, mensajeUsuario, exception);
+	    }
+	}
+
+}

@@ -1,0 +1,42 @@
+package co.edu.uco.bodyhealty.business.fecade.concrete;
+
+import co.edu.uco.bodyhealty.business.assembler.dto.concrete.CitaDTODomainAssembler;
+import co.edu.uco.bodyhealty.business.fecade.AgendarCitaFachada;
+import co.edu.uco.bodyhealty.business.usecase.AgendarCita;
+import co.edu.uco.bodyhealty.crosscutting.exceptions.BodyHealtyException;
+import co.edu.uco.bodyhealty.crosscutting.exceptions.custom.BusinessBodyHealtyException;
+import co.edu.uco.bodyhealty.data.dao.factory.DAOFactory;
+import co.edu.uco.bodyhealty.data.dao.factory.enums.Factory;
+import co.edu.uco.bodyhealty.dto.CitaDTO;
+
+public final class AgendarCitaFachadaImpl implements AgendarCitaFachada {
+	private DAOFactory factory;
+
+	public AgendarCitaFachadaImpl() {
+		factory = DAOFactory.getFactory(Factory.POSTGRESQL);
+	}
+
+	@Override
+	public void ejecutar(final CitaDTO ciudad) {
+		try {
+			factory.iniciarTransaccion();
+
+			var citaDomain = CitaDTODomainAssembler.obtenerInstancia().ensamblarDominio(ciudad);
+
+			//final AgendarCita useCase = new AgendarCitaImpl(factory);
+			//useCase.ejecutar(citaDomain);
+
+			factory.confirmarTransaccion();
+		} catch (final BodyHealtyException exception) {
+			factory.cancelarTransaccion();
+			throw exception;
+		} catch (final Exception exception) {
+			factory.cancelarTransaccion();
+			var mensajeUsuario = "Se ha presentado un problema tratando de Registrar la información de la nueva ciudad...";
+			var mensajeTecnico = "Se ha presentado un problema INESPERADO tratando de registrar la infromación  de la nueva ciudad en él método ejecutar. Por favor revise la traza completa del problema";
+			throw new BusinessBodyHealtyException(mensajeTecnico, mensajeUsuario);
+		} finally {
+			factory.cerrarConexion();
+		}
+	}
+}

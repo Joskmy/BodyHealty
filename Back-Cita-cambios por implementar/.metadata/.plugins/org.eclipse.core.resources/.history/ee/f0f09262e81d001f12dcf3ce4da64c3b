@@ -1,0 +1,76 @@
+package co.edu.uco.bodyhealty.data.dao.factory.sql.postgresql;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+import co.edu.uco.bodyhealty.crosscutting.exceptions.custom.DataBodyHealtyException;
+import co.edu.uco.bodyhealty.crosscutting.exceptions.messagecatalog.MessageCatalogStrategy;
+import co.edu.uco.bodyhealty.crosscutting.exceptions.messagecatalog.data.CodigoMensaje;
+import co.edu.uco.bodyhealty.crosscutting.helpers.SQLHelper;
+import co.edu.uco.bodyhealty.data.dao.AgendaDAO;
+import co.edu.uco.bodyhealty.data.dao.CitaDAO;
+import co.edu.uco.bodyhealty.data.dao.factory.DAOFactory;
+import co.edu.uco.bodyhealty.data.dao.factory.enums.Factory;
+import co.edu.uco.bodyhealty.data.dao.sql.postgresql.CitaPostgreSqlDAO;
+
+public final class PostgresSqlDAOFactory extends DAOFactory{
+	private Connection connection;
+
+	public PostgresSqlDAOFactory() {
+		obtenerConexion();
+	}
+
+	@Override
+	protected void obtenerConexion() {
+	    final String server = "your_postgresql_server";
+	    final String databaseName = "your_database_name";
+	    final String username = "your_username";
+	    final String password = "your_password";
+
+	    final String connectionUrl = "jdbc:postgresql://" + server + ":5432/" + databaseName + "?user=" + username + "&password=" + password;
+
+	    try {
+	        connection = DriverManager.getConnection(connectionUrl);
+	    } catch (final SQLException excepcion) {
+	        var mensajeUsuario = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00002);
+	        var mensajeTecnico = "Se ha presentado un problema tratando de obtener la conexión con la base de datos PostgreSQL en el servidor " + server + ". Por favor revise la traza de errores para identificar y solucionar el problema...";
+
+	        throw new DataBodyHealtyException(mensajeTecnico, mensajeUsuario, excepcion);
+	    } catch (final Exception excepcion) {
+	        var mensajeUsuario = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00002);
+	        var mensajeTecnico = "Se ha presentado un problema INESPERADO tratando de obtener la conexión con la base de datos PostgreSQL en el servidor " + server + ". Por favor revise la traza de errores para identificar y solucionar el problema...";
+
+	        throw new DataBodyHealtyException(mensajeTecnico, mensajeUsuario, excepcion);
+	    }
+	}
+
+	@Override
+	public void iniciarTransaccion() {
+		SQLHelper.initTransaction(connection);
+	}
+
+	@Override
+	public void confirmarTransaccion() {
+		SQLHelper.commit(connection);
+	}
+
+	@Override
+	public void cancelarTransaccion() {
+		SQLHelper.rollback(connection);
+	}
+
+	@Override
+	public void cerrarConexion() {
+		SQLHelper.close(connection);
+	}
+
+	/*
+	
+	@Override
+	public CitaDAO getCitaDAO {
+		return new CitaPostgreSqlDAO(connection);
+	}
+	
+	*/
+}

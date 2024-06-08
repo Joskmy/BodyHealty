@@ -1,0 +1,7 @@
+package co.edu.uco.bodyhealty.business.assembler.dto.concrete;
+
+
+public final class CitaDTODomainAssembler {
+	
+
+}

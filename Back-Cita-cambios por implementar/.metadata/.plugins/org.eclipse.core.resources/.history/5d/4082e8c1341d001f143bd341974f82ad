@@ -1,0 +1,40 @@
+package co.edu.uco.bodyhealty.crosscutting.helpers;
+
+import java.text.SimpleDateFormat;
+import java.util.Date; 
+
+
+public final class DateHelper {
+    private static final DateHelper instance = new DateHelper();
+    private static final String DEFAULT_DATE = "01/01/0001";
+    private static final String DEFAULT_TIME = "00:00";
+
+    private DateHelper() {
+        super();
+    }
+
+    public static final DateHelper getDateHelper() {
+        return instance;
+    }
+
+    public final <T> boolean isNull(final T object) {
+        return object == null;
+    }
+
+    private Date parseDate(String dateString) {
+        try {
+            return new SimpleDateFormat("dd/MM/yyyy").parse(dateString);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public final Date getDefaultDate(final Date date) {
+        return isNull(date) ? parseDate(DEFAULT_DATE) : date;
+    }
+
+    public final String getDefaultTime(final String time) {
+        return isNull(time) ? DEFAULT_TIME : time;
+    }
+}

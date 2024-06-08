@@ -1,0 +1,42 @@
+package co.edu.uco.bodyhealty.business.fecade.concrete;
+
+import java.util.List;
+
+import co.edu.uco.bodyhealty.business.assembler.dto.concrete.ServicioDTODomainAssembler;
+import co.edu.uco.bodyhealty.business.fecade.ConsultarServiciosFachada;
+import co.edu.uco.bodyhealty.business.usecase.ConsultarServicios;
+import co.edu.uco.bodyhealty.business.usecase.concrete.ConsultarServiciosImpl;
+import co.edu.uco.bodyhealty.data.dao.factory.DAOFactory;
+import co.edu.uco.bodyhealty.data.dao.factory.enums.Factory;
+import co.edu.uco.bodyhealty.dto.ServicioDTO;
+
+public final class ConsultarServiciosFachadaImpl implements ConsultarServiciosFachada {
+		
+	private DAOFactory factory;
+	
+	public ConsultarServiciosFachadaImpl() {
+		factory= DAOFactory.getFactory(Factory.POSTGRESQL);
+	}
+	
+	@Override
+	public final List<ServicioDTO> execute(final ServicioDTO pais) {
+		try {
+			var servicioDomain = ServicioDTODomainAssembler.obtenerInstancia().ensamblarDominio(pais);
+						
+			final ConsultarServicios useCase = new ConsultarServiciosImpl(factory);
+			var resultados = useCase.ejecutar(paisDomain);
+			return PaisDTODomainAssembler.obtenerInstancia().ensamblarListaDTO(resultados);
+			
+			
+		} catch (final TiendaChepitoException exception) {
+			throw exception;
+		} catch (final Exception exception) {
+			var mensajeUsuario = "Se ha presentado un problema tratando de Consultar la información de los paises...";
+			var mensajeTecnico = "Se ha presentado un problema INESPERADO tratando de Consultar la información de los paises...";
+			throw new BusinessTiendaChepitoException(mensajeTecnico, mensajeUsuario);
+		} finally {
+			factory.cerrarConexion();
+		}
+	}
+
+}

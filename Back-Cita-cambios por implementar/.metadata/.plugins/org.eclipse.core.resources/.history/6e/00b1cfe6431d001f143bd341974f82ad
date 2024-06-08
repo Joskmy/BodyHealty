@@ -1,0 +1,7 @@
+package co.edu.uco.bodyhealty.crosscutting.helpers;
+
+
+public final class SQLHelper {
+	
+
+}

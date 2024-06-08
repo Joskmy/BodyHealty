@@ -1,0 +1,68 @@
+package co.edu.uco.bodyhealty.data.dao.factory.sql.postgresql;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+import co.edu.uco.bodyhealty.crosscutting.exceptions.custom.DataBodyHealtyException;
+import co.edu.uco.bodyhealty.crosscutting.exceptions.messagecatalog.MessageCatalogStrategy;
+import co.edu.uco.bodyhealty.crosscutting.exceptions.messagecatalog.data.CodigoMensaje;
+import co.edu.uco.bodyhealty.crosscutting.helpers.SQLHelper;
+import co.edu.uco.bodyhealty.data.dao.ServicioDAO;
+import co.edu.uco.bodyhealty.data.dao.factory.DAOFactory;
+import co.edu.uco.bodyhealty.data.dao.sql.postgresql.ServicioPostgreSqlDAO;
+
+public final class PostgresSqlDAOFactory extends DAOFactory {
+	private Connection connection;
+
+	public PostgresSqlDAOFactory() {
+		obtenerConexion();
+	}
+
+	@Override
+	protected void obtenerConexion() {
+		final String username = "postgres";
+		final String password = "chzpmn1001";
+		final String connectionUrl = "jdbc:postgresql://localhost/Final";
+
+		try {
+			connection = DriverManager.getConnection(connectionUrl, username, password);
+		} catch (final SQLException excepcion) {
+			var mensajeUsuario = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00002);
+			var mensajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00025);
+
+			throw new DataBodyHealtyException(mensajeTecnico, mensajeUsuario, excepcion);
+		} catch (final Exception excepcion) {
+			var mensajeUsuario = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00002);
+			var mensajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M00026);
+
+			throw new DataBodyHealtyException(mensajeTecnico, mensajeUsuario, excepcion);
+		}
+	}
+
+	@Override
+	public void iniciarTransaccion() {
+		SQLHelper.initTransaction(connection);
+	}
+
+	@Override
+	public void confirmarTransaccion() {
+		SQLHelper.commit(connection);
+	}
+
+	@Override
+	public void cancelarTransaccion() {
+		SQLHelper.rollback(connection);
+	}
+
+	@Override
+	public void cerrarConexion() {
+		SQLHelper.close(connection);
+	}
+
+	@Override
+	public ServicioDAO getServicioDAO() {
+		return new ServicioPostgreSqlDAO(connection);
+	}
+
+}

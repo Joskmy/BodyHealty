@@ -1,0 +1,53 @@
+package co.edu.uco.bodyhealty.dto;
+
+import co.edu.uco.bodyhealty.crosscutting.helpers.NumericHelper;
+import co.edu.uco.bodyhealty.crosscutting.helpers.TextHelper;
+
+public final class CubiculoDTO {
+	private int identificador;
+    private String tipoCubiculo;
+    private String nombre;
+
+    public CubiculoDTO() {
+        setIdentificador(NumericHelper.ZERO);
+        setTipoCubiculo(TextHelper.EMPTY);
+        setNombre(TextHelper.EMPTY);
+    }
+
+    public CubiculoDTO(final int identificador, final String tipoCubiculo, final String nombre) {
+        setIdentificador(identificador);
+        setTipoCubiculo(tipoCubiculo);
+        setNombre(nombre);
+    }
+
+    public static final CubiculoDTO build() {
+        return new CubiculoDTO();
+    }
+
+    public final int getIdentificador() {
+        return identificador;
+    }
+
+    public final String getTipoCubiculo() {
+        return tipoCubiculo;
+    }
+
+    public final String getNombre() {
+        return nombre;
+    }
+
+    private final CubiculoDTO setIdentificador(final int identificador) {
+        this.identificador = identificador;
+        return this;
+    }
+
+    private final CubiculoDTO setTipoCubiculo(final String tipoCubiculo) {
+        this.tipoCubiculo = TextHelper.applyTrim(tipoCubiculo);
+        return this;
+    }
+
+    private final CubiculoDTO setNombre(final String nombre) {
+        this.nombre = TextHelper.applyTrim(nombre);
+        return this;
+    }
+}

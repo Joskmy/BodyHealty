@@ -1,0 +1,74 @@
+package co.edu.uco.bodyhealty.business.assembler.dto.concrete;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import co.edu.uco.bodyhealty.business.assembler.dto.DTODomainAssembler;
+import co.edu.uco.bodyhealty.business.domain.CitaDomain;
+import co.edu.uco.bodyhealty.business.domain.TurnoDomain;
+import co.edu.uco.bodyhealty.business.domain.ServicioDomain;
+import co.edu.uco.bodyhealty.business.domain.PacienteDomain;
+import co.edu.uco.bodyhealty.business.domain.EstadoCitaDomain;
+import co.edu.uco.bodyhealty.business.domain.CubiculoDomain;
+import co.edu.uco.bodyhealty.crosscutting.helpers.ObjectHelper;
+import co.edu.uco.bodyhealty.dto.CitaDTO;
+import co.edu.uco.bodyhealty.dto.TurnoDTO;
+import co.edu.uco.bodyhealty.dto.ServicioDTO;
+import co.edu.uco.bodyhealty.dto.PacienteDTO;
+import co.edu.uco.bodyhealty.dto.EstadoCitaDTO;
+import co.edu.uco.bodyhealty.dto.CubiculoDTO;
+
+public class CitaDTODomainAssembler implements DTODomainAssembler<CitaDomain, CitaDTO> {
+
+    private static final CitaDTODomainAssembler instancia = new CitaDTODomainAssembler();
+
+    private static final DTODomainAssembler<TurnoDomain, TurnoDTO> turnoAssembler = TurnoDTODomainAssembler.obtenerInstancia();
+    private static final DTODomainAssembler<ServicioDomain, ServicioDTO> servicioAssembler = ServicioDTODomainAssembler.obtenerInstancia();
+    private static final DTODomainAssembler<PacienteDomain, PacienteDTO> pacienteAssembler = PacienteDTODomainAssembler.obtenerInstancia();
+    private static final DTODomainAssembler<EstadoCitaDomain, EstadoCitaDTO> estadoCitaAssembler = EstadoCitaDTODomainAssembler.obtenerInstancia();
+    private static final DTODomainAssembler<CubiculoDomain, CubiculoDTO> cubiculoAssembler = CubiculoDTODomainAssembler.obtenerInstancia();
+
+    private CitaDTODomainAssembler() {
+        super();
+    }
+
+    public static CitaDTODomainAssembler obtenerInstancia() {
+        return instancia;
+    }
+
+    @Override
+    public CitaDomain ensamblarDominio(CitaDTO dto) {
+        var citaDtoTmp = ObjectHelper.getObjectHelper().getDefault(dto, new CitaDTO());
+        var turnoDomain = turnoAssembler.ensamblarDominio(citaDtoTmp.getTurno());
+        var servicioDomain = servicioAssembler.ensamblarDominio(citaDtoTmp.getServicio());
+        var pacienteDomain = pacienteAssembler.ensamblarDominio(citaDtoTmp.getPaciente());
+        var estadoCitaDomain = estadoCitaAssembler.ensamblarDominio(citaDtoTmp.getEstadoCita());
+        var cubiculoDomain = cubiculoAssembler.ensamblarDominio(citaDtoTmp.getCubiculo());
+        return CitaDomain.crear(citaDtoTmp.getId(), turnoDomain, servicioDomain, pacienteDomain, estadoCitaDomain, cubiculoDomain);
+    }
+
+    @Override
+    public CitaDTO ensamblarDTO(CitaDomain dominio) {
+        var citaDomainTmp = ObjectHelper.getObjectHelper().getDefault(dominio, CitaDomain.crear());
+        var turnoDTO = turnoAssembler.ensamblarDTO(citaDomainTmp.getTurno());
+        var servicioDTO = servicioAssembler.ensamblarDTO(citaDomainTmp.getServicio());
+        var pacienteDTO = pacienteAssembler.ensamblarDTO(citaDomainTmp.getPaciente());
+        var estadoCitaDTO = estadoCitaAssembler.ensamblarDTO(citaDomainTmp.getEstadoCita());
+        var cubiculoDTO = cubiculoAssembler.ensamblarDTO(citaDomainTmp.getCubiculo());
+        return CitaDTO.build().setId(citaDomainTmp.getId()).setTurno(turnoDTO).setServicio(servicioDTO)
+                .setPaciente(pacienteDTO).setEstadoCita(estadoCitaDTO).setCubiculo(cubiculoDTO);
+    }
+
+    @Override
+    public List<CitaDTO> ensamblarListaDTO(List<CitaDomain> listaDominios) {
+        var listaDominiosTmp = ObjectHelper.getObjectHelper().getDefault(listaDominios, new ArrayList<CitaDomain>());
+        var resultados = new ArrayList<CitaDTO>();
+
+        for (CitaDomain citaDomain : listaDominiosTmp) {
+            var citaDtoTmp = ensamblarDTO(citaDomain);
+            resultados.add(citaDtoTmp);
+        }
+
+        return resultados;
+    }
+}

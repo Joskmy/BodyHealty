@@ -1,0 +1,29 @@
+
+v	java:S125"<This block of commented-out lines of code should be removed.8¯“¸¬ü1b a69b7bf00bde1d00b4b1159280fb491ah
+k
+java:S1128"0Remove this unused import 'java.time.LocalTime'.8¯“¸¬ü1b 6a1585fbb1b9bc078388b85bbd5272edh
+f
+java:S1128"+Remove this unused import 'java.util.List'.8¯“¸¬ü1b 647165940d2971f696436f6a7da1f89dh
+¬
+java:S1128"qRemove this unused import 'co.edu.uco.bodyhealty.business.assembler.entity.concrete.AgendaEntityDomainAssembler'.8¯“¸¬ü1b c6f8896619cbac91fd730b3d2a0953b3h
+ª
+java:S1128"oRemove this unused import 'co.edu.uco.bodyhealty.business.assembler.entity.concrete.CitaEntityDomainAssembler'.8¯“¸¬ü1b ccb71ee343fa1f2cbbe9f8047cbfebf7h
+ˆ
+java:S1128"MRemove this unused import 'co.edu.uco.bodyhealty.business.domain.CitaDomain'.8¯“¸¬ü1b 01a913bc92e7c080f32dc4c0d7ca0455h
+¨
+java:S1128
+"mRemove this unused import 'co.edu.uco.bodyhealty.crosscutting.exceptions.custom.BusinessBodyHealtyException'.8¯“¸¬ü1b 8e501714569230fcf3973fb577e7a143h
+‰
+java:S1128"NRemove this unused import 'co.edu.uco.bodyhealty.data.dao.factory.DAOFactory'.8¯“¸¬ü1b 8d73b7ce74bd46b60f94f2398db8c5d3h
+{
+java:S1128"@Remove this unused import 'co.edu.uco.bodyhealty.dto.AgendaDTO'.8¯“¸¬ü1b 03d05adcb550fb454fceaf5483e27d91h
+
+java:S1128"FRemove this unused import 'co.edu.uco.bodyhealty.entity.AgendaEntity'.8¯“¸¬ü1b 96f08a1fc34d58735c56468c3030bc60h
+
+java:S1128"DRemove this unused import 'co.edu.uco.bodyhealty.entity.CitaEntity'.8¯“¸¬ü1b ef053216ae86f61cee52e1451b8cfda2h
+€
+java:S1128"ERemove this unused import 'co.edu.uco.bodyhealty.entity.TurnoEntity'.8¯“¸¬ü1b 290fd69ba31f9a44ab8c9da7a28bb64dh
+}
+java:S2094"BRemove this empty class, write its code or make it an "interface".8ÛàÁ¬ü1b ebba7c54087687604e33869acdce6647h
+Š
+java:S1128	"ORemove this unused import 'co.edu.uco.bodyhealty.business.usecase.AgendarCita'.8ÛàÁ¬ü1b 7e6b9a65fea989d783cb09ae8f4457ech

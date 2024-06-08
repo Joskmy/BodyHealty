@@ -1,0 +1,31 @@
+1717707122291	Delete element
+1717707134194	Delete elements
+1717707153029	Delete elements
+1717707267633	Delete elements
+1717707454795	Delete elements
+1717707465955	Delete elements
+1717707479629	Delete elements
+1717707732563	Rename type 'CitaPostgreSqlDAO'
+1717708303523	Rename type 'AgendarDAO'
+1717710378611	Rename type 'AgendarCitaImpl'
+1717710392897	Delete element
+1717710395505	Delete element
+1717710397865	Delete element
+1717710416666	Rename type 'AgendarCita'
+1717710423901	Delete element
+1717710426660	Delete element
+1717710429308	Delete element
+1717710443402	Rename type 'AgendarCitaFachadaImpl'
+1717710466277	Rename type 'CitaResponse'
+1717711139266	Rename type 'BuscarDAO'
+1717712332647	Delete element
+1717712339037	Delete elements
+1717712448434	Delete element
+1717729079180	Delete element
+1717729332757	Rename type 'AgregarServicioFachada'
+1717729382564	Rename type 'AgregarServiciosFachada'
+1717775261707	Rename type 'ConsultarNombreServicio'
+1717775476302	Delete element
+1717791995398	Rename compilation unit 'CorsConfig.java'
+1717793463973	Rename compilation unit 'WebMvcConfiguration.java'
+1717793716519	Delete element

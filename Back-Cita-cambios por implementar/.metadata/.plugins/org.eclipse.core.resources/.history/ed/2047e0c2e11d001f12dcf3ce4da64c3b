@@ -1,0 +1,9 @@
+package co.edu.uco.bodyhealty.business.usecase;
+
+import java.util.List;
+
+public interface BuscarCitas {
+	
+	List<E>;
+
+}

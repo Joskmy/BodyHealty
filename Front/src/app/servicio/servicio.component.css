@@ -1,0 +1,76 @@
+.container {
+  padding: 20px;
+}
+
+/* Estilo de la fila para separar las columnas */
+.row {
+  margin-left: -10px;
+  margin-right: -10px;
+}
+
+/* Estilo de las columnas */
+.col-md-6 {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+/* Estilo de la columna izquierda: Crear Servicio */
+.col-lg-6:first-child {
+  background-color: #f2f2f2; /* Color de fondo claro */
+  border: 1px solid #ccc; /* Borde gris */
+  border-radius: 10px; /* Bordes redondeados */
+  padding: 20px; /* Espacio interior */
+  margin-right: 20%; /* Separación entre columnas */
+  margin-left: -15%; /* Mover un poco a la izquierda */
+  margin-top: 15%; /* Mover un poco hacia abajo */
+  float: left;
+}
+
+/* Estilo de la columna derecha: Todos los Servicios */
+.col-lg-6:last-child {
+  background-color: #e6e6e6; /* Color de fondo un poco más oscuro */
+  border: 1px solid #ccc; /* Borde gris */
+  border-radius: 10px; /* Bordes redondeados */
+  padding: 20px; /* Espacio interior */
+  margin-left: 50%; /* Separación entre columnas */
+  margin-top: -40%; /* Mover un poco hacia arriba */
+  margin-right: 5%; /* Mover un poco a la derecha */
+  float: right;
+}
+
+/* Estilo de las tablas */
+.table {
+  border-radius: 10px;
+}
+
+.table th,
+.table td {
+  border: none;
+}
+
+.table th {
+  background-color: #343a40;
+  color: white;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #f8f9fa;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #e2e6ea;
+}
+
+/* Estilo de los botones */
+.btn {
+  border-radius: 20px;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+}

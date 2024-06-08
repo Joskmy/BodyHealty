@@ -1,0 +1,149 @@
+package co.edu.uco.bodyhealty.business.domain;
+
+import co.edu.uco.bodyhealty.crosscutting.helpers.NumericHelper;
+import co.edu.uco.bodyhealty.crosscutting.helpers.ObjectHelper;
+import co.edu.uco.bodyhealty.crosscutting.helpers.TextHelper;
+
+public class PersonalDomain {
+	private int id;
+	private TipoDocumentoDomain tipoId;
+	private int numeroDocumento;
+	private String primerNombre;
+	private String segundoNombre;
+	private String primerApellido;
+	private String segundoApellido;
+	private String correoElectronico;
+	private String telefono;
+	private String cuenta;
+	private String contrasenia;
+
+	public PersonalDomain() {
+		setTipoId(TipoDocumentoDomain.crear());
+		setNumeroDocumento(NumericHelper.ZERO);
+		setPrimerNombre(TextHelper.EMPTY);
+		setSegundoNombre(TextHelper.EMPTY);
+		setPrimerApellido(TextHelper.EMPTY);
+		setSegundoApellido(TextHelper.EMPTY);
+		setCorreoElectronico(TextHelper.EMPTY);
+		setTelefono(TextHelper.EMPTY);
+		setCuenta(TextHelper.EMPTY);
+		setContrasenia(TextHelper.EMPTY);
+	}
+
+	public PersonalDomain(final int id, final TipoDocumentoDomain tipoId, final int numeroDocumento,
+			final String primerNombre, final String segundoNombre, final String primerApellido,
+			final String segundoApellido, final String correoElectronico, final String telefono, final String cuenta,
+			final String contrasenia) {
+		setId(id);
+		setTipoId(tipoId);
+		setNumeroDocumento(numeroDocumento);
+		setPrimerNombre(primerNombre);
+		setSegundoNombre(segundoNombre);
+		setPrimerApellido(primerApellido);
+		setSegundoApellido(segundoApellido);
+		setCorreoElectronico(correoElectronico);
+		setTelefono(telefono);
+		setCuenta(cuenta);
+		setContrasenia(contrasenia);
+	}
+
+	public static final PersonalDomain crear() {
+		return new PersonalDomain();
+	}
+
+	public static final PersonalDomain crear(final int id, final TipoDocumentoDomain tipoId, final int numeroDocumento,
+			final String primerNombre, final String segundoNombre, final String primerApellido,
+			final String segundoApellido, final String correoElectronico, final String telefono, final String cuenta,
+			final String contrasenia) {
+		return new PersonalDomain(id, tipoId, numeroDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido
+				, correoElectronico, telefono, cuenta, contrasenia);
+	}
+
+	public final int getId() {
+		return id;
+	}
+
+	public final TipoDocumentoDomain getTipoId() {
+		return tipoId;
+	}
+
+	public final int getNumeroDocumento() {
+		return numeroDocumento;
+	}
+
+	public final String getPrimerNombre() {
+		return primerNombre;
+	}
+
+	public final String getSegundoNombre() {
+		return segundoNombre;
+	}
+
+	public final String getPrimerApellido() {
+		return primerApellido;
+	}
+
+	public final String getSegundoApellido() {
+		return segundoApellido;
+	}
+
+	public final String getCorreoElectronico() {
+		return correoElectronico;
+	}
+
+	public final String getTelefono() {
+		return telefono;
+	}
+
+	public final String getCuenta() {
+		return cuenta;
+	}
+
+	public final String getContrasenia() {
+		return contrasenia;
+	}
+
+	public final void setId(final int id) {
+		this.id = id;
+	}
+
+	public final void setTipoId(final TipoDocumentoDomain tipoId) {
+		this.tipoId = ObjectHelper.getObjectHelper().getDefault(tipoId, TipoDocumentoDomain.crear());
+	}
+
+	public final void setNumeroDocumento(final int numeroDocumento) {
+		this.numeroDocumento = numeroDocumento;
+	}
+
+	public final void setPrimerNombre(final String primerNombre) {
+		this.primerNombre = TextHelper.applyTrim(primerNombre);
+	}
+
+	public final void setSegundoNombre(final String segundoNombre) {
+		this.segundoNombre = TextHelper.applyTrim(segundoNombre);
+	}
+
+	public final void setPrimerApellido(final String primerApellido) {
+		this.primerApellido = TextHelper.applyTrim(primerApellido);
+	}
+
+	public final void setSegundoApellido(final String segundoApellido) {
+		this.segundoApellido = TextHelper.applyTrim(segundoApellido);
+	}
+
+	public final void setCorreoElectronico(final String correoElectronico) {
+		this.correoElectronico = TextHelper.applyTrim(correoElectronico);
+	}
+
+	public final void setTelefono(final String telefono) {
+		this.telefono = TextHelper.applyTrim(telefono);
+	}
+
+	public final void setCuenta(final String cuenta) {
+		this.cuenta = TextHelper.applyTrim(cuenta);
+	}
+
+	public final void setContrasenia(final String contrasenia) {
+		this.contrasenia = TextHelper.applyTrim(contrasenia);
+	}
+}

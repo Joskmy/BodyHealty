@@ -1,0 +1,69 @@
+package co.edu.uco.bodyhealty.entity;
+
+import co.edu.uco.bodyhealty.crosscutting.helpers.NumericHelper;
+import co.edu.uco.bodyhealty.crosscutting.helpers.TextHelper;
+
+public final class ServicioEntity {
+	private int id;
+    private String nombreServicio;
+    private int duracionEstimada;
+    private String descripcion;
+
+    private ServicioEntity(final int id) {
+        setId(id);
+        setNombreServicio(TextHelper.EMPTY);
+        setDuracionEstimada(NumericHelper.ZERO);
+        setDescripcion(TextHelper.EMPTY);
+    }
+
+    private ServicioEntity(final int id, final String nombreServicio, final int duracionEstimada, final String descripcion) {
+        setId(id);
+        setNombreServicio(nombreServicio);
+        setDuracionEstimada(duracionEstimada);
+        setDescripcion(descripcion);
+    }
+
+    public static final ServicioEntity build(final int id) {
+        return new ServicioEntity(id);
+    }
+
+    public static final ServicioEntity build(final int id, final String nombreServicio, final int duracionEstimada, final String descripcion) {
+        return new ServicioEntity(id, nombreServicio, duracionEstimada, descripcion);
+    }
+    protected static final ServicioEntity build() {
+		return new ServicioEntity(NumericHelper.ZERO);
+	}
+
+
+    public final int getId() {
+        return id;
+    }
+
+    private final void setId(final int id) {
+        this.id = id;
+    }
+
+    public final String getNombreServicio() {
+        return nombreServicio;
+    }
+
+    private final void setNombreServicio(final String nombreServicio) {
+    	this.nombreServicio = TextHelper.applyTrim(nombreServicio).toLowerCase();
+    }
+
+    public final int getDuracionEstimada() {
+        return duracionEstimada;
+    }
+
+    private final void setDuracionEstimada(final int duracionEstimada) {
+        this.duracionEstimada = duracionEstimada;
+    }
+
+    public final String getDescripcion() {
+        return descripcion;
+    }
+
+    private final void setDescripcion(final String descripcion) {
+        this.descripcion = TextHelper.applyTrim(descripcion).toLowerCase()
+    }
+}

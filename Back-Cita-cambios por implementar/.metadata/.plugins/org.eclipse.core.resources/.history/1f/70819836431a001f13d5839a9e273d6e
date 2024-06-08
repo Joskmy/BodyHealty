@@ -1,0 +1,5 @@
+package co.edu.uco.bodyhealty.dto;
+
+public class ServicioDTO {
+
+}

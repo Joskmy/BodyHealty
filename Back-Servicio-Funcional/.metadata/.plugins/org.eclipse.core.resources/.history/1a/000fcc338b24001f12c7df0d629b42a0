@@ -1,0 +1,45 @@
+package co.edu.uco.bodyhealty.business.fecade.concrete;
+
+
+import co.edu.uco.bodyhealty.business.assembler.dto.concrete.ServicioDTODomainAssembler;
+import co.edu.uco.bodyhealty.business.fecade.AgregarServicioFachada;
+import co.edu.uco.bodyhealty.business.usecase.AgregarServicio;
+import co.edu.uco.bodyhealty.business.usecase.concrete.AgregarServicioImpl;
+import co.edu.uco.bodyhealty.crosscutting.exceptions.BodyHealtyException;
+import co.edu.uco.bodyhealty.crosscutting.exceptions.custom.BusinessBodyHealtyException;
+import co.edu.uco.bodyhealty.data.dao.factory.DAOFactory;
+import co.edu.uco.bodyhealty.data.dao.factory.enums.Factory;
+import co.edu.uco.bodyhealty.dto.ServicioDTO;
+
+public final class AgregarServicioFachadaImpl implements AgregarServicioFachada{
+	private DAOFactory factory;
+
+	public AgregarServicioFachadaImpl() {
+		factory = DAOFactory.getFactory(Factory.POSTGRESQL);
+	}
+
+	@Override
+	public void ejecutar(final ServicioDTO servicio) {
+		try {
+			factory.iniciarTransaccion();
+
+			var servicioDomain = ServicioDTODomainAssembler.obtenerInstancia().ensamblarDominio(servicio);
+
+			final AgregarServicio useCase = new AgregarServicioImpl(factory);
+			useCase.ejecutar(servicioDomain);
+
+			factory.confirmarTransaccion();
+		} catch (final BodyHealtyException exception) {
+			factory.cancelarTransaccion();
+			throw exception;
+		} catch (final Exception exception) {
+			factory.cancelarTransaccion();
+			var mensajeUsuario = "Se ha presentado un problema tratando de Registrar la información de la nueva ciudad...";
+			var mensajeTecnico = "Se ha presentado un problema INESPERADO tratando de registrar la infromación  de la nueva ciudad en él método ejecutar. Por favor revise la traza completa del problema";
+			throw new BusinessBodyHealtyException(mensajeTecnico, mensajeUsuario);
+		} finally {
+			factory.cerrarConexion();
+		}
+	}
+	
+}

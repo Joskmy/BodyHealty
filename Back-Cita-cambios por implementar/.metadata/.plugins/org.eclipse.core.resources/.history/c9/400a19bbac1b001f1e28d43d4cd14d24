@@ -1,0 +1,41 @@
+package co.edu.uco.bodyhealty.dto;
+
+import co.edu.uco.bodyhealty.crosscutting.helpers.NumericHelper;
+import co.edu.uco.bodyhealty.crosscutting.helpers.TextHelper;
+
+public final class EstadoCitaDTO {
+	private int idEstado;
+    private String estado;
+
+    public EstadoCitaDTO() {
+        setIdEstado(NumericHelper.ZERO);
+        setEstado(TextHelper.EMPTY);
+    }
+
+    public EstadoCitaDTO(final int idEstado, final String estado) {
+        setIdEstado(idEstado);
+        setEstado(estado);
+    }
+
+    public static final EstadoCitaDTO build() {
+        return new EstadoCitaDTO();
+    }
+
+    public final int getIdEstado() {
+        return idEstado;
+    }
+
+    public final String getEstado() {
+        return estado;
+    }
+
+    private final EstadoCitaDTO setIdEstado(final int idEstado) {
+        this.idEstado = idEstado;
+        return this;
+    }
+
+    private final EstadoCitaDTO setEstado(final String estado) {
+        this.estado = TextHelper.applyTrim(estado);
+        return this;
+    }
+}

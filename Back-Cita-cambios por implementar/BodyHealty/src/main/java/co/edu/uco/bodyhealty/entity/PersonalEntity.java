@@ -1,0 +1,153 @@
+package co.edu.uco.bodyhealty.entity;
+
+import static co.edu.uco.bodyhealty.crosscutting.helpers.NumericHelper.ZERO;
+
+import co.edu.uco.bodyhealty.crosscutting.helpers.NumericHelper;
+import co.edu.uco.bodyhealty.crosscutting.helpers.ObjectHelper;
+import co.edu.uco.bodyhealty.crosscutting.helpers.TextHelper;
+
+public final class PersonalEntity {
+	private int id;
+    private TipoDocumentoEntity tipoId;
+    private int numeroDocumento;
+    private String primerNombre;
+    private String segundoNombre;
+    private String primerApellido;
+    private String segundoApellido;
+    private String correoElectronico;
+    private String telefono;
+    private String cuenta;
+    private String contrasenia;
+
+    private PersonalEntity(final int id) {
+        setTipoId(TipoDocumentoEntity.build());
+        setNumeroDocumento(NumericHelper.ZERO);
+        setPrimerNombre(TextHelper.EMPTY);
+        setSegundoNombre(TextHelper.EMPTY);
+        setPrimerApellido(TextHelper.EMPTY);
+        setSegundoApellido(TextHelper.EMPTY);
+        setCorreoElectronico(TextHelper.EMPTY);
+        setTelefono(TextHelper.EMPTY);
+        setCuenta(TextHelper.EMPTY);
+        setContrasenia(TextHelper.EMPTY);
+    }
+
+    private PersonalEntity(final int id, final TipoDocumentoEntity tipoId, final int numeroDocumento, final String primerNombre,
+                          final String segundoNombre, final String primerApellido, final String segundoApellido,
+                          final String correoElectronico, final String telefono, final String cuenta, final String contrasenia) {
+        setId(id);
+        setTipoId(tipoId);
+        setNumeroDocumento(numeroDocumento);
+        setPrimerNombre(primerNombre);
+        setSegundoNombre(segundoNombre);
+        setPrimerApellido(primerApellido);
+        setSegundoApellido(segundoApellido);
+        setCorreoElectronico(correoElectronico);
+        setTelefono(telefono);
+        setCuenta(cuenta);
+        setContrasenia(contrasenia);
+    }
+
+    public static final PersonalEntity build(final int id) {
+        return new PersonalEntity(id);
+    }
+
+    public static final PersonalEntity build(final int id, final TipoDocumentoEntity tipoId, final int numeroDocumento,
+                                             final String primerNombre, final String segundoNombre, final String primerApellido,
+                                             final String segundoApellido, final String correoElectronico, final String telefono,
+                                             final String cuenta, final String contrasenia) {
+        return new PersonalEntity(id, tipoId, numeroDocumento, primerNombre, segundoNombre, primerApellido, segundoApellido,
+                correoElectronico, telefono, cuenta, contrasenia);
+    }
+    protected static final PersonalEntity build() {
+		return new PersonalEntity(ZERO);
+	}
+
+    public final int getId() {
+        return id;
+    }
+
+    public final TipoDocumentoEntity getTipoId() {
+        return tipoId;
+    }
+
+    public final int getNumeroDocumento() {
+        return numeroDocumento;
+    }
+
+    public final String getPrimerNombre() {
+        return primerNombre;
+    }
+
+    public final String getSegundoNombre() {
+        return segundoNombre;
+    }
+
+    public final String getPrimerApellido() {
+        return primerApellido;
+    }
+
+    public final String getSegundoApellido() {
+        return segundoApellido;
+    }
+
+    public final String getCorreoElectronico() {
+        return correoElectronico;
+    }
+
+    public final String getTelefono() {
+        return telefono;
+    }
+
+    public final String getCuenta() {
+        return cuenta;
+    }
+
+    public final String getContrasenia() {
+        return contrasenia;
+    }
+
+    private final void setId(final int id) {
+        this.id = id;
+    }
+
+    private final void setTipoId(final TipoDocumentoEntity tipoId) {
+        this.tipoId = ObjectHelper.getObjectHelper().getDefault(tipoId, TipoDocumentoEntity.build());
+    }
+
+    private final void setNumeroDocumento(final int numeroDocumento) {
+        this.numeroDocumento = numeroDocumento;
+    }
+
+    private final void setPrimerNombre(final String primerNombre) {
+        this.primerNombre = TextHelper.applyTrim(primerNombre);
+    }
+
+    private final void setSegundoNombre(final String segundoNombre) {
+        this.segundoNombre = TextHelper.applyTrim(segundoNombre);
+    }
+
+    private final void setPrimerApellido(final String primerApellido) {
+        this.primerApellido = TextHelper.applyTrim(primerApellido);
+    }
+
+    private final void setSegundoApellido(final String segundoApellido) {
+        this.segundoApellido = TextHelper.applyTrim(segundoApellido);
+    }
+
+    private final void setCorreoElectronico(final String correoElectronico) {
+        this.correoElectronico = TextHelper.applyTrim(correoElectronico);
+    }
+
+    private final void setTelefono(final String telefono) {
+        this.telefono = TextHelper.applyTrim(telefono);
+    }
+
+    private final void setCuenta(final String cuenta) {
+        this.cuenta = TextHelper.applyTrim(cuenta);
+    }
+
+    private final void setContrasenia(final String contrasenia) {
+        this.contrasenia = TextHelper.applyTrim(contrasenia);
+    }
+}

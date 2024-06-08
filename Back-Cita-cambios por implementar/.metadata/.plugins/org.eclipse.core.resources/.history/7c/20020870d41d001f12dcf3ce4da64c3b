@@ -1,0 +1,6 @@
+package co.edu.uco.bodyhealty.business.fecade.concrete;
+
+public class Snippet {
+	void ejecutar(CitaDTO cita);
+}
+
